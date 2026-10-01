@@ -87,6 +87,7 @@ main{padding:13px 14px;}
   <button class="tb" onclick="xCSV()">⬇ CSV</button>
   <button class="tb" onclick="xJSON()">⬇ JSON</button>
   <button class="tb" id="bsort" onclick="tSort()">↓ Recientes</button>
+  <button class="tb" id="bclear" onclick="clearAll()" style="border-color:#3a1010;color:#7a2020;">🗑 Vaciar todo</button>
 </div>
 <main><div id="entries"><div class="empty"><div class="spin"></div>Conectando con Firebase...</div></div></main>
 
@@ -257,6 +258,18 @@ function lcp(t){const a=document.createElement('textarea');a.value=t;document.bo
 window.del=async(id)=>{
   if(!confirm('¿Eliminar?')) return;
   try{ await deleteDoc(doc(db,'victims',id)); } catch(e){ alert('Error: '+e.message); }
+};
+
+// ── CLEAR ALL ─────────────────────────────────────────
+window.clearAll=async()=>{
+  if(!all.length){alert('Ya está vacío');return;}
+  if(!confirm(`¿Eliminar las ${all.length} entradas? No hay vuelta atrás.`)) return;
+  const btn=document.getElementById('bclear');
+  btn.textContent='Vaciando...'; btn.disabled=true;
+  try{
+    await Promise.all(all.map(e=>deleteDoc(doc(db,'victims',e.id))));
+  } catch(e){ alert('Error: '+e.message); }
+  btn.textContent='🗑 Vaciar todo'; btn.disabled=false;
 };
 
 // ── EXPORT ────────────────────────────────────────────

